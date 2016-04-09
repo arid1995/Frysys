@@ -69,6 +69,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     auto scene = Game::createScene();
+    
+    CCLOG("hello");
+    
 
     // run
     director->runWithScene(scene);
