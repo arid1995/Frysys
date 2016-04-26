@@ -17,6 +17,7 @@ public:
     void runToTheRight();
     void stop();
     bool isInTheAir();
+    cocos2d::Sprite* getSkin();
 
 private:
     cocos2d::Size size;
