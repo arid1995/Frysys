@@ -13,6 +13,7 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
+    void update(float dt);
     
     // implement the "static create()" method manually
     CREATE_FUNC(Game);
@@ -35,4 +36,6 @@ private:
     Ground ground;
     
     Player *player;
+    
+    cocos2d::Size visibleSize;
 };

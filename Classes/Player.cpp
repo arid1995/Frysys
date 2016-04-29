@@ -12,7 +12,7 @@ Player::Player(cocos2d::Layer *layer){
     //setting player's physics parameters up
     this->skinBody = PhysicsBody::createBox(this->skin->getContentSize(),
             PhysicsMaterial(1, 0.5, 0.5));
-    this->skinBody->setRotationEnable(false);//we don't need rotation, do we?
+    this->skinBody->setRotationEnable(false);//we don't need rotation, do we? I think player can rotate when he jump!
     this->skinBody->setMass(PLAYERS_MASS);
     this->skin->setPhysicsBody(this->skinBody);
     
@@ -45,4 +45,8 @@ void Player::stop() {
 bool Player::isInTheAir() {
     if (abs(this->skinBody->getVelocity().y) > DELTA_Y_VELOCITY) return true;
     return false;
+}
+
+cocos2d::Sprite* Player::getSkin(){
+    return skin;
 }

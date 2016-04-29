@@ -23,7 +23,7 @@ bool Game::init()
         return false;
     }
     
-    Size visibleSize = Director::getInstance()->getVisibleSize();
+    visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     auto backgroundSprite = Sprite::create( "sky.jpg" );
@@ -88,7 +88,13 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
         case EventKeyboard::KeyCode::KEY_D:
             player->stop();
             break;
-    }
+    } 
+}
+
+void Game::update(float dt){
+    Vec2 locSprite = player->getSkin()->getPosition();
+    this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
+    CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
 }
 
 
