@@ -37,7 +37,7 @@ bool Game::init()
     this->addChild(edgeNode);
     float t;
     this->eGround(t);
-    
+
 
     
     this->player = new Player(this);
@@ -50,6 +50,7 @@ bool Game::init()
     
     
     _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+
     this->scheduleUpdate();
     
     return true;
@@ -92,9 +93,9 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 }
 
 void Game::update(float dt){
-    Vec2 locSprite = player->getSkin()->getPosition();
-    this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
-    CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
+    //Vec2 locSprite = player->getSkin()->getPosition();
+    //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
+    //CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
 }
 
 
