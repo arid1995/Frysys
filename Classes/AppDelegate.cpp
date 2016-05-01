@@ -71,7 +71,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto scene = Game::createScene();
     
     CCLOG("hello");
-    
 
     // run
     director->runWithScene(scene);

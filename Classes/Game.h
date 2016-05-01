@@ -4,8 +4,7 @@
 #include "Ground.h"
 #include "Player.h"
 #include <map>
-
-#define GRAVITY -1000
+#include "Constants.h"
 
 class Game : public cocos2d::Layer
 {

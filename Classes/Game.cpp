@@ -23,33 +23,32 @@ bool Game::init()
         return false;
     }
     
-    visibleSize = Director::getInstance()->getVisibleSize();
+    //this->visibleSize = Director::getInstance()->getVisibleSize();
+    this->visibleSize = Size(1000, 1000);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     auto backgroundSprite = Sprite::create( "sky.jpg" );
-    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    backgroundSprite->setPosition(Point(this->visibleSize.width / 2 + origin.x,
+                                        this->visibleSize.height / 2 + origin.y));
     this->addChild(backgroundSprite);
     
-    auto edgeBody = PhysicsBody::createEdgeBox(visibleSize, PhysicsMaterial(0, 0, 0));
+    auto edgeBody = PhysicsBody::createEdgeBox(this->visibleSize, PhysicsMaterial(0, 0, 0));
     auto edgeNode = Node::create();
-    edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    edgeNode->setPosition(Point(this->visibleSize.width / 2 + origin.x, this->visibleSize.height / 2 + origin.y));
     edgeNode->setPhysicsBody(edgeBody);
     this->addChild(edgeNode);
     float t;
     this->eGround(t);
-    
 
-    
     this->player = new Player(this);
     
     auto eventListener = EventListenerKeyboard::create();
     Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
     eventListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPressed, this);
     eventListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
-    
-    
-    
+
     _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+
     this->scheduleUpdate();
     
     return true;
@@ -75,6 +74,9 @@ void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
         case EventKeyboard::KeyCode::KEY_W:
             player->jump();
             break;
+        case EventKeyboard::KeyCode::KEY_CTRL:
+            player->attack();
+            break;
     }
 }
 
@@ -92,9 +94,9 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 }
 
 void Game::update(float dt){
-    Vec2 locSprite = player->getSkin()->getPosition();
-    this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
-    CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
+    //Vec2 locSprite = player->getSkin()->getPosition();
+    //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
+    //CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
 }
 
 
