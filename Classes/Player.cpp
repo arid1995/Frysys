@@ -1,6 +1,6 @@
 /*
  * Author - Farid
- * The architecture of this class is quite messy, even I can easily lose a track of this code
+ * The architecture of this class is quite messy, even I can (and did) easily lose a track of this code
  * so don't delete, edit or add anything unless u r absolutely 100% sure about what u r doing
 */
 #include "Player.h"
@@ -8,31 +8,41 @@
 USING_NS_CC;
 
 Player::Player(cocos2d::Layer *layer){
+    this->direction = 1;
     this->size = Director::getInstance()->getVisibleSize();
     this->origin = Director::getInstance()->getVisibleOrigin();
 
     this->spritebatch = SpriteBatchNode::create("knight.png");//loading animation spritesheet
     this->cache = SpriteFrameCache::getInstance();
-    cache->addSpriteFramesWithFile("knight.plist");
+    this->cache->addSpriteFramesWithFile("knight.plist");
 
     initializeAnimationVectors(this->runFrames, 10, "Run");
     initializeAnimationVectors(this->jumpFrames, 10, "Jump");
     initializeAnimationVectors(this->idleFrames, 10, "Idle");
+    initializeAnimationVectors(this->attackFrames, 10, "Attack");
 
-    this->skin = Sprite::createWithSpriteFrameName("Run (1).png");//assigning a skin to a player
+    //gotta find better solution for this shit
+    this->jumpDuration = 0;
+    this->attackDuration = 0;
+    this->jumped = false;
+    this->attacked = false;
 
-    this->skin->setPosition(Point(this->size.width / 2, this->size.height / 2));
+    this->initWithSpriteFrameName("Run (1).png");//assigning a skin to a player
+
+    this->setPosition(Point(this->size.width / 2, this->size.height / 2));
 
     //setting player's physics parameters up
-    this->skinBody = PhysicsBody::createBox(this->skin->getContentSize(),
+    this->skinBody = PhysicsBody::createBox(this->getContentSize(),
                                             PhysicsMaterial(1, 0.5, 0.5));
     this->skinBody->setRotationEnable(false);//we don't need rotation, do we? I think player can rotate when he jump!
     this->skinBody->setMass(PLAYERS_MASS);
-    this->skin->setPhysicsBody(this->skinBody);
+    this->setPhysicsBody(this->skinBody);
 
-    layer->addChild(this->skin);
+    layer->addChild(this);
 
-    startAnimation(idleFrames, 0.05f);
+    startAnimation(this->idleFrames, 0.05f);
+    this->scheduleUpdate();
+    this->resume();
 }
 
 void Player::initializeAnimationVectors(Vector<SpriteFrame*> &vector, unsigned frameCount, char *namePattern) {
@@ -49,39 +59,50 @@ void Player::initializeAnimationVectors(Vector<SpriteFrame*> &vector, unsigned f
 
 //starts animation
 void Player::startAnimation(Vector<SpriteFrame*> animVector, float animSpeed, bool looped) {
-    this->skin->stopAllActions();
+    this->stopAllActions();
     Animation* animation = Animation::createWithSpriteFrames(animVector, animSpeed);
     if (looped) {
-        this->skin->runAction(RepeatForever::create(Animate::create(animation)));
+        this->runAction(RepeatForever::create(Animate::create(animation)));
     } else
     {
-        this->skin->runAction(Animate::create(animation));
+        this->runAction(Animate::create(animation));
     }
-    this->skinBody->setVelocity(Vec2(0, this->skinBody->getVelocity().y));
 }
+
 
 void Player::jump() {
     if (isInTheAir()) return;
-    startAnimation(jumpFrames, 0.08f, false);
+    this->jumped = true;
+    this->jumpDuration = JUMP_INTERVAL * 10;
+    startAnimation(this->jumpFrames, JUMP_INTERVAL, false);
     this->skinBody->setVelocity(Vec2(this->skinBody->getVelocity().x, JUMP_VELOCITY));
 }
 
 void Player::runToTheLeft() {
     if (isInTheAir()) return;
-    startAnimation(runFrames, 0.05f);
-    this->skinBody->setVelocity(Vec2(-RUN_VELOCITY, this->skinBody->getVelocity().y));
+    this->direction = -1;
+    startAnimation(this->runFrames, ANIMATION_INTERVAL);
+    this->skinBody->setVelocity(Vec2(-RUN_VELOCITY, 0));
 }
 
-void Player::runToTheRight(){
+void Player::runToTheRight() {
     if (isInTheAir()) return;
-    startAnimation(runFrames, 0.05f);
-    this->skinBody->setVelocity(Vec2(RUN_VELOCITY, 
-            this->skinBody->getVelocity().y));
+    this->direction = 1;
+    startAnimation(this->runFrames, ANIMATION_INTERVAL);
+    this->skinBody->setVelocity(Vec2(RUN_VELOCITY, 0));
+}
+
+void Player::attack() {
+    if (isInTheAir()) return;
+    this->attacked = true;
+    this->attackDuration = ANIMATION_INTERVAL * 10;
+    startAnimation(this->attackFrames, ANIMATION_INTERVAL, false);
+    this->skinBody->setVelocity(Vec2(0, 0));
 }
 
 void Player::stop() {
     //if (isInTheAir()) return;
-    startAnimation(idleFrames, 0.05f);
+    startAnimation(this->idleFrames, ANIMATION_INTERVAL);
     this->skinBody->setVelocity(Vec2(0, this->skinBody->getVelocity().y));
 }
 
@@ -90,6 +111,38 @@ bool Player::isInTheAir() {
     return false;
 }
 
-cocos2d::Sprite* Player::getSkin(){
-    return skin;
+void Player::update(float delta) {
+    //mirror sprites if direction is left
+    //this is totally fucked up
+    if (this->attackDuration > 0) {
+        this->attackDuration -= delta;
+    } else {
+        if (attacked) {
+            attacked = false;
+
+            if (abs(this->skinBody->getVelocity().x) > DELTA_Y_VELOCITY)
+                this->startAnimation(runFrames, ANIMATION_INTERVAL);
+            else
+                this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+        }
+    }
+
+    if (this->jumpDuration > 0) {
+        this->jumpDuration -= delta;
+    } else {
+        if (jumped) {
+            jumped = false;
+
+            if (abs(this->skinBody->getVelocity().x) > DELTA_Y_VELOCITY)
+                this->startAnimation(runFrames, ANIMATION_INTERVAL);
+            else
+                this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+        }
+    }
+
+    if (direction == -1) {
+        this->setFlippedX(true);
+    } else {
+        this->setFlippedX(false);
+    }
 }
