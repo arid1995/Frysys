@@ -23,7 +23,6 @@ void Ground::eGround(Player* playerTMP)
 
 TMXTiledMap* Ground::getMap(){
     return map;
-}
 
 
 
@@ -94,3 +93,4 @@ void Ground::update(float dt){
         player->setStatus(5);
 }
 
+}

@@ -115,7 +115,6 @@ bool Player::isInTheAir() {
 
 void Player::setStatus(int s){
     status = s;
-}
 
 void Player::update(float delta) {
     //mirror sprites if direction is left
@@ -170,4 +169,5 @@ void Player::setSpeed(Vec2 v){
         gravityA+=0.25;
     Point pos = this->getPosition();
     this->setPosition(Point(pos.x + v.x, pos.y - v.y - gravityA));
+}
 }
