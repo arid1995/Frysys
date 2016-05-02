@@ -16,7 +16,7 @@ void Ground::eGround(Player* playerTMP)
     player = playerTMP;
     getSizes();
     walls = map->getLayer("wall");
-    player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(3,7)));
+    player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(3,2)));
     getCollisionTiles();
     
 }
