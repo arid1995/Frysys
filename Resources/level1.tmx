@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="left-down" width="30" height="20" tilewidth="64" tileheight="64" nextobjectid="1">
+ <tileset firstgid="1" name="grass" tilewidth="64" tileheight="64" tilecount="150" columns="15">
+  <image source="grass.jpg" width="991" height="640"/>
+ </tileset>
+ <tileset firstgid="151" name="sky" tilewidth="64" tileheight="64" tilecount="377" columns="29">
+  <image source="sky.jpg" width="1905" height="858"/>
+ </tileset>
+ <layer name="sky" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzl1PefzwUcB/BvZ5wtSVKSbKGoRBSihCINhRKhKMooWxlltZe99x531g17nc3Zex939p5nPH/4+BeqB6/H+/nz6/H65d0/FAoNYCCDGMwQhjKM4YxgJKMYzRjGMo7xTGAik5jMFKYyjenMIIJIZgZmMZs5zCWKaGKIZR7zWcBCFrGYJSxlGctZQRwrWcVq1rCWdaxnAxsD8WxiM1vYyja2s4Od7GI3e9jLPvZzgIMc4jBHSOAox0gkieOc4CSnAqc5w1nOcZ4LXOQSl7nCVa5xnRskc5Nb3Cb0gCOMFKQkFakJJw1pSRdITwYykonMPEgWHiIrD5ONR8jOo+TgMR4nJ0+QiyfJzVPkIS/5yE8BCgYKUZinKUJRivEMz1KcEjzH87xASV6kFKV5iTKU5WVeoRzlqcCrVKQSrwVepzJvUIWqVONN3qI6NXibmrzDu7zH+9TiAz6kNnWoy0d8TD0+oT4N+DTQkEY05jM+pwlN+YIvaUZzvuJrWtCSVrTmG76lDW1pR3s60JFOdOY7vg90oSvd6M4P/EgPetKL3vThJ37mF37lN37nD/7kL/7mH/rSj/4MYCCDGBwYwlCGMZwRjGQUoxnDWMYxnglMZBKTmcJUpjGdGUQQyUxmMZs5zCUqEE0MscxjPgtYyCIWs4SlLGM5K4hjJatYzRrWso71bGAj8WxiM1vYGtjGdnawk13sZg972cd+DnCQQxzmCAkc5RiJJHGcE5zkFKc5w1nOcT5wgYtc4jJXuMo1rnODZG5yi9uEwvwIwkhBSlKRmnDSkJZ0pCcDGclE5sD/ae/d/Nt77+Ze3Ptf9d5vuQNDtzGq
+  </data>
+ </layer>
+ <layer name="wall" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt0scNhEAQBdEJEO/ZxXsCgAggAgiYuhEAQsOhS3rH1r+0UpIkSZL0zQaMGnYXrBp2N+wadg+cL28YMGHBhgMXHnwECBEhRoIUv4e3f2TIUaBEhRoNWnTo1f1vE+aHtxdMOxkf
+  </data>
+ </layer>
+</map>
