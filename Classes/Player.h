@@ -23,6 +23,8 @@ public:
     void stop();
     bool isInTheAir();
     void update(float delta);
+    void setSpeed(cocos2d::Vec2 v);
+    void setStatus(int status);
 
 private:
     cocos2d::SpriteBatchNode* spritebatch;//loading animation spritesheet
@@ -48,4 +50,7 @@ private:
     //starts the animation of a player based on animVector with given speed (animSpeed);
     // looped false means animation won't be looped
     void startAnimation(cocos2d::Vector<cocos2d::SpriteFrame*> animVector, float animSpeed, bool looped = true);
+    float gravityA=0;
+    int vX=0, vY=0;
+    int status;
 };

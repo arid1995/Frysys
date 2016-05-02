@@ -32,7 +32,7 @@ private:
     
     cocos2d::PhysicsWorld *sceneWorld;
     
-    Ground ground;
+    Ground* ground;
     
     Player *player;
     

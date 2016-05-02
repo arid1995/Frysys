@@ -4,6 +4,7 @@
  * so don't delete, edit or add anything unless u r absolutely 100% sure about what u r doing
 */
 #include "Player.h"
+#include "Ground.h"
 
 USING_NS_CC;
 
@@ -29,14 +30,14 @@ Player::Player(cocos2d::Layer *layer){
 
     this->initWithSpriteFrameName("Run (1).png");//assigning a skin to a player
 
-    this->setPosition(Point(this->size.width / 2, this->size.height / 2));
+    
 
     //setting player's physics parameters up
-    this->skinBody = PhysicsBody::createBox(this->getContentSize(),
+    /*this->skinBody = PhysicsBody::createBox(this->getContentSize(),
                                             PhysicsMaterial(1, 0.5, 0.5));
     this->skinBody->setRotationEnable(false);//we don't need rotation, do we? I think player can rotate when he jump!
     this->skinBody->setMass(PLAYERS_MASS);
-    this->setPhysicsBody(this->skinBody);
+    this->setPhysicsBody(this->skinBody);*/
 
     layer->addChild(this);
 
@@ -75,21 +76,22 @@ void Player::jump() {
     this->jumped = true;
     this->jumpDuration = JUMP_INTERVAL * 10;
     startAnimation(this->jumpFrames, JUMP_INTERVAL, false);
-    this->skinBody->setVelocity(Vec2(this->skinBody->getVelocity().x, JUMP_VELOCITY));
+    status = 3;
 }
 
 void Player::runToTheLeft() {
     if (isInTheAir()) return;
     this->direction = -1;
     startAnimation(this->runFrames, ANIMATION_INTERVAL);
-    this->skinBody->setVelocity(Vec2(-RUN_VELOCITY, 0));
+    status=2;
 }
 
 void Player::runToTheRight() {
-    if (isInTheAir()) return;
+    //if (isInTheAir()) return;
     this->direction = 1;
     startAnimation(this->runFrames, ANIMATION_INTERVAL);
-    this->skinBody->setVelocity(Vec2(RUN_VELOCITY, 0));
+    //this->skinBody->setVelocity(Vec2(RUN_VELOCITY, 0));
+    status=1;
 }
 
 void Player::attack() {
@@ -103,12 +105,16 @@ void Player::attack() {
 void Player::stop() {
     //if (isInTheAir()) return;
     startAnimation(this->idleFrames, ANIMATION_INTERVAL);
-    this->skinBody->setVelocity(Vec2(0, this->skinBody->getVelocity().y));
+    status=4;
 }
 
 bool Player::isInTheAir() {
-    if (abs(this->skinBody->getVelocity().y) > DELTA_Y_VELOCITY) return true;
+    if (vY!=0) return true;
     return false;
+}
+
+void Player::setStatus(int s){
+    status = s;
 }
 
 void Player::update(float delta) {
@@ -129,14 +135,14 @@ void Player::update(float delta) {
 
     if (this->jumpDuration > 0) {
         this->jumpDuration -= delta;
+        if(this->jumpDuration < delta){
+                this->startAnimation(this->idleFrames, ANIMATION_INTERVAL);
+        }
     } else {
         if (jumped) {
             jumped = false;
-
-            if (abs(this->skinBody->getVelocity().x) > DELTA_Y_VELOCITY)
-                this->startAnimation(runFrames, ANIMATION_INTERVAL);
-            else
-                this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+            //if (abs(this->skinBody->getVelocity().x) > DELTA_Y_VELOCITY)
+            this->startAnimation(runFrames, ANIMATION_INTERVAL);
         }
     }
 
@@ -145,4 +151,23 @@ void Player::update(float delta) {
     } else {
         this->setFlippedX(false);
     }
+    switch(status){
+        case 1: vX=2; break;            //press right
+        case 2: vX=-2; break;           //press left
+        case 3: vY=-7; break;           //press up
+        case 4: vX=0; break;            //release right or left or tileLeft or tileRight
+        case 5: vY=0; break;            //tileDown
+        case 6: vY=1; break;            //notTileDown
+    }
+    this->setSpeed(Vec2(vX,vY));
+    
+}
+
+void Player::setSpeed(Vec2 v){
+    if (v.y == 0)
+        gravityA=0;
+    else
+        gravityA+=0.25;
+    Point pos = this->getPosition();
+    this->setPosition(Point(pos.x + v.x, pos.y - v.y - gravityA));
 }
