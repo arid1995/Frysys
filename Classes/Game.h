@@ -32,9 +32,10 @@ private:
     
     cocos2d::PhysicsWorld *sceneWorld;
     
-    Ground ground;
+    Ground* ground;
     
     Player *player;
+    cocos2d::Follow *camera;
     
     cocos2d::Size visibleSize;
 };

@@ -23,6 +23,15 @@ public:
     void stop();
     bool isInTheAir();
     void update(float delta);
+    void setSpeed(cocos2d::Vec2 v);
+    void setSpeedY(int speed);
+    void setSpeedX(int speed);
+    int getSpeedY();
+    int getSpeedX();
+    bool isFalling();
+    void setJumpDuration(bool set);
+    bool getJumpDuration();
+    short getDirection();
 
 private:
     cocos2d::SpriteBatchNode* spritebatch;//loading animation spritesheet
@@ -36,9 +45,9 @@ private:
     cocos2d::PhysicsBody *skinBody;
     cocos2d::Action *currentAction;
     //gotta find better solution to this shit
-    float jumpDuration;
-    float attackDuration;//shows when to switch to idle or run animation (simply counting down
     bool jumped;
+    bool jumpDuration;
+    float attackDuration;//shows when to switch to idle or run animation (simply counting down
     bool attacked;//shows whether player jumped or attacked
 
     short direction;//-1 - left, 1 - right
@@ -48,4 +57,7 @@ private:
     //starts the animation of a player based on animVector with given speed (animSpeed);
     // looped false means animation won't be looped
     void startAnimation(cocos2d::Vector<cocos2d::SpriteFrame*> animVector, float animSpeed, bool looped = true);
+    float gravityA=0;
+    int vX=0, vY=0;
+    int status;
 };
