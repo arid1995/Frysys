@@ -35,6 +35,7 @@ private:
     Ground* ground;
     
     Player *player;
+    cocos2d::Follow *camera;
     
     cocos2d::Size visibleSize;
 };

@@ -23,10 +23,12 @@ Player::Player(cocos2d::Layer *layer){
     initializeAnimationVectors(this->attackFrames, 10, "Attack");
 
     //gotta find better solution for this shit
-    this->jumpDuration = 0;
-    this->attackDuration = 0;
     this->jumped = false;
+    this->jumpDuration = false;
+    this->attackDuration = 0;
     this->attacked = false;
+    this->setScale(1);
+    
 
     this->initWithSpriteFrameName("Run (1).png");//assigning a skin to a player
 
@@ -73,17 +75,17 @@ void Player::startAnimation(Vector<SpriteFrame*> animVector, float animSpeed, bo
 
 void Player::jump() {
     if (isInTheAir()) return;
-    this->jumped = true;
-    this->jumpDuration = JUMP_INTERVAL * 10;
+    jumpDuration = true;
+    jumped = true;
     startAnimation(this->jumpFrames, JUMP_INTERVAL, false);
-    status = 3;
+    vY = -7;
 }
 
 void Player::runToTheLeft() {
     if (isInTheAir()) return;
     this->direction = -1;
     startAnimation(this->runFrames, ANIMATION_INTERVAL);
-    status=2;
+    vX = -2;
 }
 
 void Player::runToTheRight() {
@@ -91,7 +93,7 @@ void Player::runToTheRight() {
     this->direction = 1;
     startAnimation(this->runFrames, ANIMATION_INTERVAL);
     //this->skinBody->setVelocity(Vec2(RUN_VELOCITY, 0));
-    status=1;
+    vX = 2;
 }
 
 void Player::attack() {
@@ -99,13 +101,12 @@ void Player::attack() {
     this->attacked = true;
     this->attackDuration = ANIMATION_INTERVAL * 10;
     startAnimation(this->attackFrames, ANIMATION_INTERVAL, false);
-    this->skinBody->setVelocity(Vec2(0, 0));
 }
 
 void Player::stop() {
     //if (isInTheAir()) return;
     startAnimation(this->idleFrames, ANIMATION_INTERVAL);
-    status=4;
+    vX = 0;
 }
 
 bool Player::isInTheAir() {
@@ -113,36 +114,35 @@ bool Player::isInTheAir() {
     return false;
 }
 
-void Player::setStatus(int s){
-    status = s;
+bool Player::isFalling() {
+    if (vY+gravityA > 0)
+        return true;
+    return false;
+}
+
+void Player::setSpeedY(int s){
+    vY = s;
+}
+
+void Player::setSpeedX(int s){
+    vX = s;
+}
 
 void Player::update(float delta) {
     //mirror sprites if direction is left
     //this is totally fucked up
+    
     if (this->attackDuration > 0) {
         this->attackDuration -= delta;
-    } else {
+    } else
         if (attacked) {
             attacked = false;
+            this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+        }
 
-            if (abs(this->skinBody->getVelocity().x) > DELTA_Y_VELOCITY)
-                this->startAnimation(runFrames, ANIMATION_INTERVAL);
-            else
-                this->startAnimation(idleFrames, ANIMATION_INTERVAL);
-        }
-    }
-
-    if (this->jumpDuration > 0) {
-        this->jumpDuration -= delta;
-        if(this->jumpDuration < delta){
-                this->startAnimation(this->idleFrames, ANIMATION_INTERVAL);
-        }
-    } else {
-        if (jumped) {
-            jumped = false;
-            //if (abs(this->skinBody->getVelocity().x) > DELTA_Y_VELOCITY)
-            this->startAnimation(runFrames, ANIMATION_INTERVAL);
-        }
+    if (jumped && !jumpDuration){
+        this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+        jumped = false;
     }
 
     if (direction == -1) {
@@ -150,16 +150,7 @@ void Player::update(float delta) {
     } else {
         this->setFlippedX(false);
     }
-    switch(status){
-        case 1: vX=2; break;            //press right
-        case 2: vX=-2; break;           //press left
-        case 3: vY=-7; break;           //press up
-        case 4: vX=0; break;            //release right or left or tileLeft or tileRight
-        case 5: vY=0; break;            //tileDown
-        case 6: vY=1; break;            //notTileDown
-    }
     this->setSpeed(Vec2(vX,vY));
-    
 }
 
 void Player::setSpeed(Vec2 v){
@@ -170,4 +161,23 @@ void Player::setSpeed(Vec2 v){
     Point pos = this->getPosition();
     this->setPosition(Point(pos.x + v.x, pos.y - v.y - gravityA));
 }
+
+void Player::setJumpDuration(bool set){
+    jumpDuration = set;
+}
+
+bool Player::getJumpDuration(){
+    return jumpDuration;
+}
+
+int Player::getSpeedX(){
+    return vX;
+}
+
+int Player::getSpeedY(){
+    return vY;
+}
+
+short Player::getDirection(){
+    return direction;
 }

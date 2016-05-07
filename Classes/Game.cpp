@@ -46,6 +46,10 @@ bool Game::init()
     
     ground->eGround(player);
     
+    camera = Follow::create(player, Rect::ZERO);
+    camera->retain();
+    this->runAction(camera);
+    
     auto eventListener = EventListenerKeyboard::create();
     Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
     eventListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPressed, this);

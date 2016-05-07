@@ -14,16 +14,15 @@ void Ground::eGround(Player* playerTMP)
 {
     CCLOG("GROUND");
     player = playerTMP;
+    map->setScale(SCALE_FACTOR);
     getSizes();
     walls = map->getLayer("wall");
-    player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(3,2)));
-    getCollisionTiles();
-    
+    player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(16,5)));
 }
 
 TMXTiledMap* Ground::getMap(){
     return map;
-
+}
 
 
 Point Ground::positionForTileCoordinate(Size s, Point point){
@@ -52,7 +51,11 @@ void Ground::getCollisionTiles(){
     int fromX = -1;
     int fromY = -1;
     Point posAtTile = getTilePosition(player);
-    
+    if (posAtTile.x < 1)
+        player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(1,posAtTile.y)));
+    if (posAtTile.x > 18)
+        player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(posAtTile.y,1)));
+        
     for (int a = fromX; a < 2; a++) {
         
         for (int b = fromY; b < 2; b++) {
@@ -60,12 +63,12 @@ void Ground::getCollisionTiles(){
             if(!(a == 0 && b == 0)){
                 
                 Sprite *tile = walls->getTileAt(Point(posAtTile.x + a, posAtTile.y + b));
+                //CCLOG("%f, %f", posAtTile.x + a, posAtTile.y + b);
                 
                 if (tile){
-                    tailArr[i]=true;
+                    Point tmp = tile->getPosition();//(Point((posAtTile.x + a)*scale*64, (posAtTile.y + b)*scale*64));
+                    tileArr[i]=Rect(tmp.x, tmp.y, map->getTileSize().width*scale, map->getTileSize().height*scale);
                 }
-                else
-                    tailArr[i]=false;
                 i++;
             }
         }
@@ -88,9 +91,38 @@ void Ground::getSizes(){
 }
 
 void Ground::update(float dt){
+    Rect player_rect = player->getTextureRect();
+    player_rect.setRect(player->getPosition().x - player->getContentSize().width/4, player->getPosition().y - player->getContentSize().height+50, player_rect.size.width-10, player_rect.size.height+50);
     getCollisionTiles();
-    if (tailArr[6])
-        player->setStatus(5);
-}
-
+        /*if (player_rect.intersectsRect(tileArr[i])) {
+            //CCLOG("OOOOOOOOKKKKKKKKKK!!!!!!!!!!");
+            switch(i){
+                case 3:
+                    if(player->getDirection()<0)
+                        player->stop();
+                case 4:
+                    if(player->getDirection()>0)
+                        player->stop();
+                case 6:
+                    if(player->isFalling()){
+                        player->setSpeedY(0);
+                        player->setJumpDuration(false);
+                    }
+            }
+        }*/
+    /*if (player_rect.intersectsRect(tileArr[3]))
+        //CCLOG("OK!");
+    else
+        //CCLOG("FAIL!");*/
+    if (player_rect.intersectsRect(tileArr[4]) && player->isFalling()){
+        player->setSpeedY(0);
+        player->setJumpDuration(false);
+    }
+    if (!(player_rect.intersectsRect(tileArr[4]) || player->getJumpDuration())){
+        player->setSpeedY(1);
+    }
+    if (player_rect.intersectsRect(tileArr[6]) && player->getDirection()>0)
+        player->setSpeedX(0);
+    if (player_rect.intersectsRect(tileArr[1]) && player->getDirection()<0)
+        player->setSpeedX(0);
 }

@@ -22,11 +22,12 @@ private:
     cocos2d::Vec2 origin;
     cocos2d::TMXTiledMap* map;
     cocos2d::TMXLayer* walls;
+    cocos2d::TMXLayer* sky;
     Player* player;
     float scale;
     cocos2d::Size mapContentSize;
     cocos2d::Point mapPosition;
     cocos2d::Size tileSize;
     cocos2d::Size mapRowCol;
-    bool* tailArr = new bool[8];
+    cocos2d::Rect* tileArr = new cocos2d::Rect[8];
 };
