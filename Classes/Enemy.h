@@ -9,10 +9,13 @@
 #include <cmath>
 #include "Constants.h"
 
-class Player : public AnimatedEntity
+#define JUMP_INTERVAL 0.08
+#define ANIMATION_INTERVAL 0.05
+
+class Enemy : public AnimatedEntity
 {
 public:
-    Player(cocos2d::Layer *layer, std::string spriteSheetPath, std::string plistPath, int frameCount);
+    Enemy(cocos2d::Layer *layer, std::string spriteSheetPath, std::string plistPath, int frameCount);
     void update(float delta);
 private:
     int lives;

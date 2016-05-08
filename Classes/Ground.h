@@ -1,8 +1,15 @@
+/*
+ * Серег, впиши сюда себя.
+ * И, я думаю, стоит этот класс перемименовать в Level,
+ * так как это больше похоже на сцену
+ */
 #pragma once
 
 #include "cocos2d.h"
 #include "Player.h"
+#include "Enemy.h"
 
+// FIXME: Consider using polymorphic list or array for collision purposes. *refer to GameObject::getCollidedObjects
 class Ground: public cocos2d::Layer
 {
 public:

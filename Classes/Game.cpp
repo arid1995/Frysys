@@ -1,3 +1,7 @@
+/*
+ * Серег, впиши сюда себя. Этот класс за тобой.
+ */
+
 #include "Game.h"
 #include "Constants.h"
 
@@ -22,7 +26,7 @@ bool Game::init()
     {
         return false;
     }
-    
+
     //this->visibleSize = Director::getInstance()->getVisibleSize();
     this->visibleSize = Size(1000, 1000);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -42,7 +46,14 @@ bool Game::init()
     //float t;
     //this->eGround(t);
 
-    this->player = new Player(this);
+    //just a test {
+    this->player = new Player(this, "NinjaGirl.png", "NinjaGirl.plist", 10);
+    for (int i = 0; i < 5; i++) {
+        Enemy *anusKnight = new Enemy(this, "knight.png", "knight.plist", 10);
+        this->objects.push_back(anusKnight);
+        anusKnight->setPosition(400+i*70, 200);
+    }
+    // } just a test
     
     ground->eGround(player);
     
@@ -61,12 +72,6 @@ bool Game::init()
     
     return true;
 }
-
-/*void Game::eGround(float dt){
-    
-    ground.eGround( this );
-    
-}*/
 
 void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event){
     switch(keyCode){
@@ -104,7 +109,6 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 void Game::update(float dt){
     //Vec2 locSprite = player->getSkin()->getPosition();
     //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
-    //CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
 }
 
 

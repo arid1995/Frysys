@@ -33,8 +33,9 @@ private:
     cocos2d::PhysicsWorld *sceneWorld;
     
     Ground* ground;
-    
+    // FIXME: consider removing player from this class
     Player *player;
+    std::list<GameObject*> objects;
     cocos2d::Follow *camera;
     
     cocos2d::Size visibleSize;
