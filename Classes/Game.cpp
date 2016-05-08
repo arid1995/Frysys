@@ -22,7 +22,7 @@ bool Game::init()
     {
         return false;
     }
-    
+
     //this->visibleSize = Director::getInstance()->getVisibleSize();
     this->visibleSize = Size(1000, 1000);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -62,12 +62,6 @@ bool Game::init()
     return true;
 }
 
-/*void Game::eGround(float dt){
-    
-    ground.eGround( this );
-    
-}*/
-
 void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event){
     switch(keyCode){
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
@@ -104,7 +98,6 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 void Game::update(float dt){
     //Vec2 locSprite = player->getSkin()->getPosition();
     //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
-    //CCLOG("x=%f, y=%f\n",locSprite.x, locSprite.y);
 }
 
 

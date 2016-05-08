@@ -6,13 +6,14 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "DynamicObject.h"
 #include <cmath>
 #include "Constants.h"
 
 #define JUMP_INTERVAL 0.08
 #define ANIMATION_INTERVAL 0.05
 
-class Player : public cocos2d::Sprite
+class Player : public DynamicObject
 {
 public:
     Player(cocos2d::Layer *layer);
@@ -23,15 +24,9 @@ public:
     void stop();
     bool isInTheAir();
     void update(float delta);
-    void setSpeed(cocos2d::Vec2 v);
-    void setSpeedY(int speed);
-    void setSpeedX(int speed);
-    int getSpeedY();
-    int getSpeedX();
-    bool isFalling();
     void setJumpDuration(bool set);
     bool getJumpDuration();
-    short getDirection();
+    bool isFalling();
 
 private:
     cocos2d::SpriteBatchNode* spritebatch;//loading animation spritesheet
@@ -49,15 +44,10 @@ private:
     bool jumpDuration;
     float attackDuration;//shows when to switch to idle or run animation (simply counting down
     bool attacked;//shows whether player jumped or attacked
-
-    short direction;//-1 - left, 1 - right
     //initializes animation with frameCount sprite frames named by /namePattern (frameNumber).png/
     void initializeAnimationVectors(cocos2d::Vector<cocos2d::SpriteFrame*> &vector,
                                     unsigned frameCount, char *namePattern);
     //starts the animation of a player based on animVector with given speed (animSpeed);
     // looped false means animation won't be looped
     void startAnimation(cocos2d::Vector<cocos2d::SpriteFrame*> animVector, float animSpeed, bool looped = true);
-    float gravityA=0;
-    int vX=0, vY=0;
-    int status;
 };

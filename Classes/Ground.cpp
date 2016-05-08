@@ -1,3 +1,6 @@
+/*
+ * Серег, впиши сюда себя. Этот класс за тобой.
+ */
 #include "Ground.h"
 #include "Constants.h"
 
@@ -26,18 +29,18 @@ TMXTiledMap* Ground::getMap(){
 
 
 Point Ground::positionForTileCoordinate(Size s, Point point){
-    
+
     float x = floor(s.width/2 * scale + point.x * map->getTileSize().width * scale);
     float y = floor(s.height/2 * scale + point.y * map->getTileSize().height * scale);
-    
+
     return Point(x,y);
-    
+
 }
 
 void Ground::loadMap(const char* mapname){
-    
+
     map = TMXTiledMap::create(mapname);
-    
+
 }
 
 /*void Ground::falling(Point pt){
@@ -46,7 +49,7 @@ void Ground::loadMap(const char* mapname){
 }*/
 
 void Ground::getCollisionTiles(){
-    
+
     int i = 0;
     int fromX = -1;
     int fromY = -1;
@@ -55,16 +58,14 @@ void Ground::getCollisionTiles(){
         player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(1,posAtTile.y)));
     if (posAtTile.x > 18)
         player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(posAtTile.y,1)));
-        
+
     for (int a = fromX; a < 2; a++) {
-        
+
         for (int b = fromY; b < 2; b++) {
-            
-            if(!(a == 0 && b == 0)){
-                
+
+            if(!(a == 0 && b == 0)) {
                 Sprite *tile = walls->getTileAt(Point(posAtTile.x + a, posAtTile.y + b));
-                //CCLOG("%f, %f", posAtTile.x + a, posAtTile.y + b);
-                
+
                 if (tile){
                     Point tmp = tile->getPosition();//(Point((posAtTile.x + a)*scale*64, (posAtTile.y + b)*scale*64));
                     tileArr[i]=Rect(tmp.x, tmp.y, map->getTileSize().width*scale, map->getTileSize().height*scale);
@@ -92,7 +93,9 @@ void Ground::getSizes(){
 
 void Ground::update(float dt){
     Rect player_rect = player->getTextureRect();
-    player_rect.setRect(player->getPosition().x - player->getContentSize().width/4, player->getPosition().y - player->getContentSize().height+50, player_rect.size.width-10, player_rect.size.height+50);
+    player_rect.setRect(player->getPosition().x - player->getContentSize().width/4,
+                        player->getPosition().y - player->getContentSize().height+50,
+                        player_rect.size.width-10, player_rect.size.height+50);
     getCollisionTiles();
         /*if (player_rect.intersectsRect(tileArr[i])) {
             //CCLOG("OOOOOOOOKKKKKKKKKK!!!!!!!!!!");
@@ -114,6 +117,8 @@ void Ground::update(float dt){
         //CCLOG("OK!");
     else
         //CCLOG("FAIL!");*/
+
+    // FIXME: unnecessary perfomance leakage, has to be fixed
     if (player_rect.intersectsRect(tileArr[4]) && player->isFalling()){
         player->setSpeedY(0);
         player->setJumpDuration(false);
