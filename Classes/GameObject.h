@@ -18,7 +18,7 @@ public:
     void setSize(int width, int height);
     void setPosition(const cocos2d::Vec2& position);
     void setPosition(int x, int y);
-    std::vector<GameObject*> getCollidedObjects(std::vector<GameObject*> &levelObjects);
+    std::vector<GameObject*> getCollidedObjects(const std::vector<GameObject*> &levelObjects);
     ~GameObject();
 private:
     cocos2d::Rect *hitBox;//for collision check

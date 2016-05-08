@@ -18,18 +18,17 @@ public:
     virtual void attack() {};
     virtual void stop() {};
     void setSpeed(cocos2d::Vec2 velocity);
-    void setSpeedY(int velocity);
-    void setSpeedX(int velocity);
+    void setSpeedY(float velocity);
+    void setSpeedX(float velocity);
     float gravityA;
-    int getSpeedY();
-    int getSpeedX();
-    bool isFalling();
+    float getSpeedY();
+    float getSpeedX();
     short getDirection();
     ~DynamicObject() {};
 
 private:
-    int yVelocity;
-    int xVelocity;
+    float yVelocity;
+    float xVelocity;
     int status;
 protected:
     short direction;//-1 - left, 1 - right

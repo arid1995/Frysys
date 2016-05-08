@@ -19,7 +19,7 @@ GameObject::GameObject(int width, int height, int x, int y, SpriteFrame *spriteF
 
 GameObject::GameObject() {
     this->hitBox = new Rect();
-    this->hitBox->setRect(0, 0, 0, 0);
+    *this->hitBox = this->getTextureRect();
 }
 
 Size GameObject::getSize() {
@@ -45,7 +45,7 @@ void GameObject::setPosition(const Vec2& position)
 }
 
 //shows objects which are collided with THIS object in current moment
-std::vector<GameObject*> GameObject::getCollidedObjects(std::vector<GameObject*> &leveldObjects) {
+std::vector<GameObject*> GameObject::getCollidedObjects(const std::vector<GameObject*> &leveldObjects) {
     std::vector<GameObject*> collided;
     for (int i = 0; i < leveldObjects.size(); i++) {
         if (leveldObjects[i]->getPosition().x > this->hitBox->origin.x) {
@@ -60,12 +60,12 @@ std::vector<GameObject*> GameObject::getCollidedObjects(std::vector<GameObject*>
             }
         }
         if (leveldObjects[i]->getPosition().y > this->hitBox->origin.y) {
-            if ((leveldObjects[i]->getPosition().y - (this->hitBox->origin.y - this->hitBox->size.height)) >
+            if (((leveldObjects[i]->getPosition().y + leveldObjects[i]->getSize().height) - this->hitBox->origin.y) >
                 (this->hitBox->size.height + leveldObjects[i]->getSize().height)) {
                 continue;
             }
         } else {
-            if ((this->hitBox->origin.y - (leveldObjects[i]->getPosition().y - leveldObjects[i]->getSize().height)) >
+            if (((this->hitBox->origin.y + this->hitBox->size.height) - leveldObjects[i]->getPosition().y) >
                 (this->hitBox->size.height + leveldObjects[i]->getSize().height)) {
                 continue;
             }
@@ -74,6 +74,9 @@ std::vector<GameObject*> GameObject::getCollidedObjects(std::vector<GameObject*>
     }
     return collided;
 }
+
+// TODO: add collision checker that works with std::list
+// TODO:  add function that shows which side is collided
 
 GameObject::~GameObject() {
     delete this->hitBox;

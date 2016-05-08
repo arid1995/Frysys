@@ -1,13 +1,13 @@
 /*
  * Author - Farid
  * Not yet finished
-*/
-#include "Player.h"
+ */
+#include "Enemy.h"
 
 USING_NS_CC;
 
-Player::Player(cocos2d::Layer *layer, std::string spriteSheetPath, std::string plistPath, int frameCount) :
-    AnimatedEntity(spriteSheetPath, plistPath, frameCount)
+Enemy::Enemy(cocos2d::Layer *layer, std::string spriteSheetPath, std::string plistPath, int frameCount) :
+        AnimatedEntity(spriteSheetPath, plistPath, frameCount)
 {
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
@@ -16,17 +16,17 @@ Player::Player(cocos2d::Layer *layer, std::string spriteSheetPath, std::string p
     this->resume();
 }
 
-void Player::update(float delta) {
+void Enemy::update(float delta) {
     //FIXME: A big perfomance issue, has to be fixed
     if (this->attackDuration > 0) {
         this->attackDuration -= delta;
     } else
-        if (attacked) {
-            attacked = false;
-            this->startAnimation(idleFrames, ANIMATION_INTERVAL);
-        }
+    if (attacked) {
+        attacked = false;
+        this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+    }
 
-    if (jumped && !jumpDuration){
+    if (jumped && !jumpDuration) {
         this->startAnimation(idleFrames, ANIMATION_INTERVAL);
         jumped = false;
     }

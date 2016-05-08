@@ -1,3 +1,7 @@
+/*
+ * Серег, впиши сюда себя. Этот класс за тобой.
+ */
+
 #include "Game.h"
 #include "Constants.h"
 
@@ -42,7 +46,14 @@ bool Game::init()
     //float t;
     //this->eGround(t);
 
-    this->player = new Player(this);
+    //just a test {
+    this->player = new Player(this, "NinjaGirl.png", "NinjaGirl.plist", 10);
+    for (int i = 0; i < 5; i++) {
+        Enemy *anusKnight = new Enemy(this, "knight.png", "knight.plist", 10);
+        this->objects.push_back(anusKnight);
+        anusKnight->setPosition(400+i*70, 200);
+    }
+    // } just a test
     
     ground->eGround(player);
     
