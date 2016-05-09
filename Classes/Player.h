@@ -12,8 +12,13 @@
 class Player : public AnimatedEntity
 {
 public:
-    Player(cocos2d::Layer *layer, std::string spriteSheetPath, std::string plistPath, int frameCount);
+    Player(cocos2d::Layer *layer, std::string playerType);
+    void shoot();
     void update(float delta);
+    void collide();
+    void dead();
+    void inflictDamage(int damage);
+    int getDamage ();
 private:
     int lives;
     int damage;

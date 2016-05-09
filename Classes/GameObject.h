@@ -15,11 +15,19 @@ public:
     GameObject(int width, int height, int x, int y, cocos2d::SpriteFrame *spriteFrame);
     cocos2d::Size getSize();
     cocos2d::Vec2 getPosition();
+    cocos2d::Rect getHitBox();
     void setSize(int width, int height);
     void setPosition(const cocos2d::Vec2& position);
     void setPosition(int x, int y);
     std::vector<GameObject*> getCollidedObjects(const std::vector<GameObject*> &levelObjects);
+    std::vector<std::list<GameObject*>::iterator> getCollidedObjects(std::list<GameObject*> &levelObjects);
+    virtual void collide() {}
+    virtual void inflictDamage(int damage) {}
+    virtual int getDamage () { return 0;}
     ~GameObject();
 private:
-    cocos2d::Rect *hitBox;//for collision check
+    cocos2d::Rect hitBox;//for collision check
+protected:
+    void setHitBox(cocos2d::Rect hitbox);
+    bool isTransparent;//shows whether the player should be physically affected after collision or not
 };

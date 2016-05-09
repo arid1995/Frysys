@@ -20,6 +20,7 @@ void Ground::eGround(Player* playerTMP)
     map->setScale(SCALE_FACTOR);
     getSizes();
     walls = map->getLayer("wall");
+    // FIXME: consider using getSize instead of getContentSize
     player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(16,5)));
 }
 
@@ -93,6 +94,7 @@ void Ground::getSizes(){
 
 void Ground::update(float dt){
     Rect player_rect = player->getTextureRect();
+    // FIXME: consider using hitBox (GameObject class) instead of player_rect, and try to avoid hardcoded numbers
     player_rect.setRect(player->getPosition().x - player->getContentSize().width/4,
                         player->getPosition().y - player->getContentSize().height+50,
                         player_rect.size.width-10, player_rect.size.height+50);
@@ -118,7 +120,6 @@ void Ground::update(float dt){
     else
         //CCLOG("FAIL!");*/
 
-    // FIXME: unnecessary perfomance leakage, has to be fixed
     if (player_rect.intersectsRect(tileArr[4]) && player->isFalling()){
         player->setSpeedY(0);
         player->setJumpDuration(false);

@@ -46,13 +46,22 @@ bool Game::init()
     //float t;
     //this->eGround(t);
 
-    //just a test {
-    this->player = new Player(this, "NinjaGirl.png", "NinjaGirl.plist", 10);
+    //loading textures into cache
+    this->cache = SpriteFrameCache::getInstance();
+    this->cache->addSpriteFramesWithFile("ninja.plist", "ninja.png");
+    this->cache->addSpriteFramesWithFile("knight.plist", "knight.png");
+    this->cache->addSpriteFramesWithFile("objects.plist", "objects.png");
+
+    //just a test delete when you want to {
+    this->player = new Player(this, "ninja");
     for (int i = 0; i < 5; i++) {
-        Enemy *anusKnight = new Enemy(this, "knight.png", "knight.plist", 10);
+        Enemy *anusKnight = new Enemy(this, "knight");
         this->objects.push_back(anusKnight);
         anusKnight->setPosition(400+i*70, 200);
     }
+
+    Exit *exit = new Exit(this, Vec2(700, 100));
+    this->objects.push_back(exit);
     // } just a test
     
     ground->eGround(player);
@@ -90,6 +99,9 @@ void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
         case EventKeyboard::KeyCode::KEY_CTRL:
             player->attack();
             break;
+        case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
+            player->shoot();
+            break;
     }
 }
 
@@ -109,6 +121,15 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 void Game::update(float dt){
     //Vec2 locSprite = player->getSkin()->getPosition();
     //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
+
+    //rough example of how to use collisions
+    //makes player run into a death sequence if he collided with something
+    if(player->getCollidedObjects(this->objects).size() != 0) {
+        player->stop();
+        player->setSpeedX(0.0f);
+        player->setSpeedY(-0.1f);
+        player->dead();
+    }
 }
 
 

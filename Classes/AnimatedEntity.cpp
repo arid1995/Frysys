@@ -1,26 +1,24 @@
 /*
  * Author - Farid
+ * Base class for all "alive" objects
 */
 #include "AnimatedEntity.h"
 
 USING_NS_CC;
 
-//please don't use this constructor
-
-// FIXME: Somehow only the first loaded spritesheet is used, others are ignored
-AnimatedEntity::AnimatedEntity(std::string spriteSheetPath, std::string plistPath, int frameCount) {
+AnimatedEntity::AnimatedEntity(std::string type) {
     this->direction = 1;
     this->size = Director::getInstance()->getVisibleSize();
     this->origin = Director::getInstance()->getVisibleOrigin();
 
-    this->spritebatch = SpriteBatchNode::create(spriteSheetPath);//loading animation spritesheet
     this->cache = SpriteFrameCache::getInstance();
-    this->cache->addSpriteFramesWithFile(plistPath);
 
-    initializeAnimationVectors(this->runFrames, frameCount, "Run");
-    initializeAnimationVectors(this->jumpFrames, frameCount, "Jump");
-    initializeAnimationVectors(this->idleFrames, frameCount, "Idle");
-    initializeAnimationVectors(this->attackFrames, frameCount, "Attack");
+    initializeAnimationVectors(this->runFrames, type + "_Run");
+    initializeAnimationVectors(this->jumpFrames, type + "_Jump");
+    initializeAnimationVectors(this->idleFrames, type + "_Idle");
+    initializeAnimationVectors(this->attackFrames, type + "_Attack");
+    initializeAnimationVectors(this->shootFrames, type + "_Throw");
+    initializeAnimationVectors(this->deadFrames, type + "_Dead");
 
     // FIXME: gotta find better solution for this shit
     this->jumped = false;
@@ -30,20 +28,24 @@ AnimatedEntity::AnimatedEntity(std::string spriteSheetPath, std::string plistPat
     this->setScale(1);
 
 
-    this->initWithSpriteFrameName("Run (1).png");//assigning a skin to a player
+    this->initWithSpriteFrameName(type + "_Run (1).png");//assigning a skin to a player
 
-
+    this->setHitBox(this->getTextureRect());
     startAnimation(this->idleFrames, 0.05f);
 }
 
-void AnimatedEntity::initializeAnimationVectors(Vector<SpriteFrame*> &vector, unsigned frameCount, char *namePattern) {
+void AnimatedEntity::initializeAnimationVectors(Vector<SpriteFrame*> &vector, std::string namePattern) {
     //namePattern like "Run" or "Jump"
     char str[100] = {0};
-    for(unsigned i = 2; i <= frameCount; i++)
+    //loop until there are frames responding to the pattern
+    for(unsigned i = 1; true; i++)
     {
-        sprintf(str, "%s (%d).png", namePattern, i);
-        SpriteFrame* frame = cache->getSpriteFrameByName(str);
+        std::string frameName = namePattern + " (" + std::to_string(i) + ")" + ".png";
+        SpriteFrame* frame = cache->getSpriteFrameByName(frameName);
         Sprite *tmp = (Sprite*) frame;
+        if (!tmp) {
+            break;
+        }
         vector.pushBack(frame);
     }
 }
