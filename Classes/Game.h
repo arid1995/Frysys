@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Ground.h"
 #include "Player.h"
+#include "Exit.h"
 #include <map>
 #include "Constants.h"
 
@@ -31,9 +32,9 @@ private:
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     
     cocos2d::PhysicsWorld *sceneWorld;
+    cocos2d::SpriteFrameCache* cache;
     
     Ground* ground;
-    // FIXME: consider removing player from this class
     Player *player;
     std::list<GameObject*> objects;
     cocos2d::Follow *camera;

@@ -6,14 +6,37 @@
 
 USING_NS_CC;
 
-Player::Player(cocos2d::Layer *layer, std::string spriteSheetPath, std::string plistPath, int frameCount) :
-    AnimatedEntity(spriteSheetPath, plistPath, frameCount)
+Player::Player(cocos2d::Layer *layer, std::string playerType) :
+    AnimatedEntity(playerType)
 {
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
     layer->addChild(this);
     this->scheduleUpdate();
     this->resume();
+}
+
+void Player::shoot() {
+    if (isInTheAir()) return;
+    this->attacked = true;
+    this->attackDuration = ANIMATION_INTERVAL * 10;
+    startAnimation(this->shootFrames, ANIMATION_INTERVAL, false);
+}
+
+void Player::collide() {
+    // TODO: write here what should player do on collision
+}
+void Player::inflictDamage(int damage) {
+    // TODO: write here what should player inflict damage
+}
+
+int Player::getDamage () {
+    // TODO: write here how should player recieve damage
+}
+
+void Player::dead() {
+    startAnimation(this->deadFrames, ANIMATION_INTERVAL, false);
+    // TODO: write other stuff that needs to happen when player dies
 }
 
 void Player::update(float delta) {
