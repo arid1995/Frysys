@@ -26,7 +26,7 @@ private:
     void eGround( float dt);
     
     static std::map<cocos2d::EventKeyboard::KeyCode,
-    std::chrono::high_resolution_clock::time_point> keys;
+      std::chrono::high_resolution_clock::time_point> keys;
     
     void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
     void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);

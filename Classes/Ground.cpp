@@ -9,8 +9,8 @@ USING_NS_CC;
 Ground::Ground(){
     visibleSize = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
-    this->scheduleUpdate();
-    this->resume();
+    scheduleUpdate();
+    resume();
 }
 
 void Ground::eGround(Player* playerTMP)
@@ -21,7 +21,7 @@ void Ground::eGround(Player* playerTMP)
     getSizes();
     walls = map->getLayer("wall");
     // FIXME: consider using getSize instead of getContentSize
-    player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(16,5)));
+    player->setPosition(positionForTileCoordinate(player->getContentSize(), Point(16,5)));
 }
 
 TMXTiledMap* Ground::getMap(){
@@ -41,7 +41,6 @@ Point Ground::positionForTileCoordinate(Size s, Point point){
 void Ground::loadMap(const char* mapname){
 
     map = TMXTiledMap::create(mapname);
-
 }
 
 /*void Ground::falling(Point pt){
@@ -56,9 +55,9 @@ void Ground::getCollisionTiles(){
     int fromY = -1;
     Point posAtTile = getTilePosition(player);
     if (posAtTile.x < 1)
-        player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(1,posAtTile.y)));
+        player->setPosition(positionForTileCoordinate(player->getContentSize(), Point(1,posAtTile.y)));
     if (posAtTile.x > 18)
-        player->setPosition(this->positionForTileCoordinate(player->getContentSize(), Point(posAtTile.y,1)));
+        player->setPosition(positionForTileCoordinate(player->getContentSize(), Point(posAtTile.y,1)));
 
     for (int a = fromX; a < 2; a++) {
 
