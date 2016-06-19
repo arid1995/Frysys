@@ -28,12 +28,12 @@ bool Game::init()
     }
 
     //this->visibleSize = Director::getInstance()->getVisibleSize();
-    this->visibleSize = Size(1000, 1000);
+    visibleSize = Size(1000, 1000);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 ////////////////////////////
     ground = new Ground();
     ground->loadMap("level1.tmx");
-    this->addChild(ground->getMap());
+    addChild(ground->getMap());
     
     
     
@@ -47,28 +47,28 @@ bool Game::init()
     //this->eGround(t);
 
     //loading textures into cache
-    this->cache = SpriteFrameCache::getInstance();
-    this->cache->addSpriteFramesWithFile("ninja.plist", "ninja.png");
-    this->cache->addSpriteFramesWithFile("knight.plist", "knight.png");
-    this->cache->addSpriteFramesWithFile("objects.plist", "objects.png");
+    cache = SpriteFrameCache::getInstance();
+    cache->addSpriteFramesWithFile("ninja.plist", "ninja.png");
+    cache->addSpriteFramesWithFile("knight.plist", "knight.png");
+    cache->addSpriteFramesWithFile("objects.plist", "objects.png");
 
     //just a test delete when you want to {
-    this->player = new Player(this, "ninja");
+    player = new Player(this, "ninja");
+
     for (int i = 0; i < 5; i++) {
         Enemy *anusKnight = new Enemy(this, "knight");
-        this->objects.push_back(anusKnight);
+        objects.push_back(anusKnight);
         anusKnight->setPosition(400+i*70, 200);
     }
 
     Exit *exit = new Exit(this, Vec2(700, 100));
-    this->objects.push_back(exit);
-    // } just a test
+    objects.push_back(exit);
     
     ground->eGround(player);
     
     camera = Follow::create(player, Rect::ZERO);
     camera->retain();
-    this->runAction(camera);
+    runAction(camera);
     
     auto eventListener = EventListenerKeyboard::create();
     Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
@@ -77,7 +77,7 @@ bool Game::init()
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 
-    this->scheduleUpdate();
+    scheduleUpdate();
     
     return true;
 }
@@ -124,7 +124,7 @@ void Game::update(float dt){
 
     //rough example of how to use collisions
     //makes player run into a death sequence if he collided with something
-    if(player->getCollidedObjects(this->objects).size() != 0) {
+    if(player->getCollidedObjects(objects).size() != 0) {
         player->stop();
         player->setSpeedX(0.0f);
         player->setSpeedY(-0.1f);

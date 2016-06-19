@@ -17,28 +17,28 @@ DynamicObject::DynamicObject(int width, int height, int x, int y, const std::str
 }
 
 void DynamicObject::setSpeedY(float velocity){
-    this->yVelocity = velocity;
+    yVelocity = velocity;
 }
 
 void DynamicObject::setSpeedX(float velocity){
-    this->xVelocity = velocity;
+    xVelocity = velocity;
 }
 
 void DynamicObject::setSpeed(Vec2 velocity){
     if (velocity.y == 0)
-        this->gravityA=0;
+        gravityA=0;
     else
-        this->gravityA+=0.25;
-    Point pos = this->getPosition();
-    this->setPosition(Point(pos.x + velocity.x, pos.y - velocity.y - gravityA));
+        gravityA+=0.25;
+    Point pos = getPosition();
+    setPosition(Point(pos.x + velocity.x, pos.y - velocity.y - gravityA));
 }
 
 float DynamicObject::getSpeedX(){
-    return this->xVelocity;
+    return xVelocity;
 }
 
 float DynamicObject::getSpeedY(){
-    return this->yVelocity;
+    return yVelocity;
 }
 
 short DynamicObject::getDirection(){

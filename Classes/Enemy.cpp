@@ -12,8 +12,8 @@ Enemy::Enemy(Layer *layer, std::string enemyType) : //only "knight" is allowed y
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
     layer->addChild(this);
-    this->scheduleUpdate();
-    this->resume();
+    scheduleUpdate();
+    resume();
 }
 
 void Enemy::collide() {
@@ -29,24 +29,24 @@ int Enemy::getDamage () {
 
 void Enemy::update(float delta) {
     //FIXME: A big perfomance issue, has to be fixed
-    if (this->attackDuration > 0) {
-        this->attackDuration -= delta;
+    if (attackDuration > 0) {
+        attackDuration -= delta;
     } else
     if (attacked) {
         attacked = false;
-        this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+        startAnimation(idleFrames, ANIMATION_INTERVAL);
     }
 
     if (jumped && !jumpDuration) {
-        this->startAnimation(idleFrames, ANIMATION_INTERVAL);
+        startAnimation(idleFrames, ANIMATION_INTERVAL);
         jumped = false;
     }
 
     //mirror sprites if direction is left
     if (direction == -1) {
-        this->setFlippedX(true);
+        setFlippedX(true);
     } else {
-        this->setFlippedX(false);
+        setFlippedX(false);
     }
-    this->setSpeed(Vec2(getSpeedX(), getSpeedY()));
+    setSpeed(Vec2(getSpeedX(), getSpeedY()));
 }
