@@ -20,11 +20,13 @@ public:
     void setSpeed(cocos2d::Vec2 velocity);
     void setSpeedY(float velocity);
     void setSpeedX(float velocity);
-    float gravityA;
     float getSpeedY();
     float getSpeedX();
     short getDirection();
     ~DynamicObject() {};
+
+public:
+    float gravityA;
 
 private:
     float yVelocity;
