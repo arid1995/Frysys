@@ -43,39 +43,8 @@ void GameObject::setPosition(const Vec2& position)
     setPosition(position.x, position.y);
 }
 
-//shows objects which are collided with THIS object in current moment
-std::vector<GameObject*> GameObject::getCollidedObjects(const std::vector<GameObject*> &leveldObjects) {
-    std::vector<GameObject*> collided;
-    for (int i = 0; i < leveldObjects.size(); i++) {
-        if (leveldObjects[i]->getPosition().x > hitBox.origin.x) {
-            if ((leveldObjects[i]->getPosition().x - (hitBox.origin.x - hitBox.size.width)) >
-                    (hitBox.size.width + leveldObjects[i]->getSize().width)) {
-                continue;
-            }
-        } else {
-            if ((hitBox.origin.x - (leveldObjects[i]->getPosition().x - leveldObjects[i]->getSize().width)) >
-                (hitBox.size.width + leveldObjects[i]->getSize().width)) {
-                continue;
-            }
-        }
-        if (leveldObjects[i]->getPosition().y > hitBox.origin.y) {
-            if (((leveldObjects[i]->getPosition().y + leveldObjects[i]->getSize().height) - hitBox.origin.y) >
-                (hitBox.size.height + leveldObjects[i]->getSize().height)) {
-                continue;
-            }
-        } else {
-            if (((hitBox.origin.y + hitBox.size.height) - leveldObjects[i]->getPosition().y) >
-                (hitBox.size.height + leveldObjects[i]->getSize().height)) {
-                continue;
-            }
-        }
-        collided.push_back(leveldObjects[i]);
-    }
-    return collided;
-}
-
-std::vector<std::list<GameObject*>::iterator> GameObject::getCollidedObjects(std::list<GameObject*> &leveldObjects) {
-    std::vector<std::list<GameObject*>::iterator> collided;
+std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &leveldObjects) {
+    std::list<GameObject*> collided;
     for (std::list<GameObject*>::iterator i = leveldObjects.begin(); i != leveldObjects.end(); i++) {
         if (i.operator*()->getPosition().x > hitBox.origin.x) {
             if ((i.operator*()->getPosition().x - (hitBox.origin.x - hitBox.size.width)) >
@@ -99,7 +68,7 @@ std::vector<std::list<GameObject*>::iterator> GameObject::getCollidedObjects(std
                 continue;
             }
         }
-        collided.push_back(i);
+        collided.push_back(*i);
     }
     return collided;
 }

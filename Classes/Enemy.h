@@ -20,6 +20,7 @@ public:
     void collide();
     void inflictDamage(int damage);
     int getDamage();
+
 private:
     int lives;
     int damage;

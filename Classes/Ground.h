@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-// FIXME: Consider using polymorphic list or array for collision purposes. *refer to GameObject::getCollidedObjects
+// FIXME: Consider using polymorphic list* for collision purposes. *refer to GameObject::getCollidedObjects
 class Ground: public cocos2d::Layer
 {
 public:

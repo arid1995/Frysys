@@ -32,6 +32,13 @@ public:
 private:
     AnimatedEntity() {};
 protected:
+    //initializes animation with frameCount sprite frames named by /namePattern (frameNumber).png/
+    void initializeAnimationVectors(cocos2d::Vector<cocos2d::SpriteFrame*> &vector, std::string namePattern);
+    //starts the animation of a player based on animVector with given speed (animSpeed);
+    //looped false means animation won't be looped
+    void startAnimation(cocos2d::Vector<cocos2d::SpriteFrame*> animVector, float animSpeed, bool looped = true);
+
+protected:
     cocos2d::SpriteBatchNode* spritebatch;//loading animation spritesheet
     cocos2d::SpriteFrameCache* cache;
     cocos2d::Vector<cocos2d::SpriteFrame*> runFrames;
@@ -47,9 +54,4 @@ protected:
     bool jumpDuration;
     float attackDuration;//shows when to switch to idle or run animation (simply counting down
     bool attacked;//shows whether player jumped or attacked
-    //initializes animation with frameCount sprite frames named by /namePattern (frameNumber).png/
-    void initializeAnimationVectors(cocos2d::Vector<cocos2d::SpriteFrame*> &vector, std::string namePattern);
-    //starts the animation of a player based on animVector with given speed (animSpeed);
-    // looped false means animation won't be looped
-    void startAnimation(cocos2d::Vector<cocos2d::SpriteFrame*> animVector, float animSpeed, bool looped = true);
 };

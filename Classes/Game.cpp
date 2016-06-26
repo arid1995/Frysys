@@ -30,21 +30,10 @@ bool Game::init()
     //this->visibleSize = Director::getInstance()->getVisibleSize();
     visibleSize = Size(1000, 1000);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-////////////////////////////
+
     ground = new Ground();
     ground->loadMap("level1.tmx");
     addChild(ground->getMap());
-    
-    
-    
-////////////////////////////////////
-    /*auto edgeBody = PhysicsBody::createEdgeBox(this->visibleSize, PhysicsMaterial(0, 0, 0));
-    auto edgeNode = Node::create();
-    edgeNode->setPosition(Point(this->visibleSize.width / 2 + origin.x, this->visibleSize.height / 2 + origin.y));
-    edgeNode->setPhysicsBody(edgeBody);
-    this->addChild(edgeNode);*/
-    //float t;
-    //this->eGround(t);
 
     //loading textures into cache
     cache = SpriteFrameCache::getInstance();
@@ -57,12 +46,12 @@ bool Game::init()
 
     for (int i = 0; i < 5; i++) {
         Enemy *anusKnight = new Enemy(this, "knight");
-        objects.push_back(anusKnight);
+        ObjectList::getInstance()->addObject(anusKnight);
         anusKnight->setPosition(400+i*70, 200);
     }
 
     Exit *exit = new Exit(this, Vec2(700, 100));
-    objects.push_back(exit);
+    ObjectList::getInstance()->addObject(exit);
     
     ground->eGround(player);
     
@@ -119,21 +108,12 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 }
 
 void Game::update(float dt){
-    //Vec2 locSprite = player->getSkin()->getPosition();
-    //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
-
-    //rough example of how to use collisions
-    //makes player run into a death sequence if he collided with something
-    if(player->getCollidedObjects(objects).size() != 0) {
+    std::list<GameObject*> collided = player->getCollidedObjects(ObjectList::getInstance()->getList());
+    if(collided.size() != 0) {
         player->stop();
         player->setSpeedX(0.0f);
-        player->setSpeedY(-0.1f);
+        player->setSpeedY(-0.01f);
         player->dead();
+        collided.pop_back();
     }
 }
-
-
-
-
-
-
