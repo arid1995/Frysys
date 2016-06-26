@@ -20,7 +20,7 @@ void Enemy::collide() {
     // TODO: write here what should enemy do on collision
 }
 void Enemy::inflictDamage(int damage) {
-    // TODO: write here what should enemy inflict damage
+    // TODO: write here how should enemy inflict damage
 }
 
 int Enemy::getDamage () {

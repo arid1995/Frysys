@@ -5,6 +5,7 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "cmath"
 
 class GameObject : public cocos2d::Sprite {
 public:
@@ -20,6 +21,8 @@ public:
     void setPosition(const cocos2d::Vec2& position);
     void setPosition(int x, int y);
     std::list<GameObject*> getCollidedObjects(std::list<GameObject*> &levelObjects);
+    //returns number of the collided side. Clockwise: 1 - top, 2..3, 4 - left, 0 - no collision
+    int getCollidedSide(GameObject *collidedObject);
     virtual void collide() {}
     virtual void inflictDamage(int damage) {}
     virtual int getDamage () { return 0;}
