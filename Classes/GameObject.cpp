@@ -73,6 +73,48 @@ std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &le
     return collided;
 }
 
+//clockwise: 1 - top, 2..3, 4 - left, 0 - not collided
+int GameObject::getCollidedSide(GameObject* collidedObject) {
+    float yIntersection = 0;
+    float xIntersection = 0;
+    //left
+    if (collidedObject->getPosition().x < hitBox.origin.x) {
+        xIntersection = (collidedObject->getPosition().x - hitBox.origin.x) + collidedObject->getSize().width;
+        if (xIntersection > hitBox.size.width) xIntersection = hitBox.size.width;
+    }
+    //right
+    if (collidedObject->getPosition().x > hitBox.origin.x) {
+        xIntersection = -((hitBox.origin.x - collidedObject->getPosition().x) + collidedObject->getSize().width);
+        if (xIntersection > collidedObject->hitBox.size.width) xIntersection = -collidedObject->hitBox.size.width;
+    }
+    //bottom
+    if (collidedObject->getPosition().y < hitBox.origin.y) {
+        yIntersection = (collidedObject->getPosition().y - hitBox.origin.y) + collidedObject->getSize().height;
+        if (yIntersection > hitBox.size.height) yIntersection = hitBox.size.height;
+    }
+    //top
+    if (collidedObject->getPosition().y > hitBox.origin.y) {
+        yIntersection = -((hitBox.origin.y - collidedObject->getPosition().y) + collidedObject->getSize().height);
+        if (yIntersection > collidedObject->hitBox.size.height) yIntersection = -collidedObject->hitBox.size.height;
+    }
+
+    //is intersection taking place in horizontal plane (left or right)
+    bool horizontal = false;
+    if (std::abs(xIntersection) > std::abs(yIntersection)) {
+        horizontal = false;
+    } else {
+        horizontal = true;
+    }
+
+    if (horizontal) {
+        if (xIntersection > 0) return 2;//left
+        else return 4;//right
+    } else {
+        if (yIntersection > 0) return 1;//bottom
+        else return 3;//top
+    }
+}
+
 void GameObject::setHitBox(cocos2d::Rect hitbox) {
     hitBox = hitbox;
 }
@@ -80,9 +122,6 @@ void GameObject::setHitBox(cocos2d::Rect hitbox) {
 Rect GameObject::getHitBox() {
     return hitBox;
 }
-
-// TODO: add collision checker that works with std::list
-// TODO:  add function that shows which side is collided
 
 GameObject::~GameObject() {
 

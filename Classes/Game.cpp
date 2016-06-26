@@ -44,13 +44,13 @@ bool Game::init()
     //just a test delete when you want to {
     player = new Player(this, "ninja");
 
-    for (int i = 0; i < 5; i++) {
+    /*for (int i = 0; i < 5; i++) {
         Enemy *anusKnight = new Enemy(this, "knight");
         ObjectList::getInstance()->addObject(anusKnight);
         anusKnight->setPosition(400+i*70, 200);
-    }
+    }*/
 
-    Exit *exit = new Exit(this, Vec2(700, 100));
+    Exit *exit = new Exit(this, Vec2(650, 70));
     ObjectList::getInstance()->addObject(exit);
     
     ground->eGround(player);
@@ -110,10 +110,19 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 void Game::update(float dt){
     std::list<GameObject*> collided = player->getCollidedObjects(ObjectList::getInstance()->getList());
     if(collided.size() != 0) {
-        player->stop();
-        player->setSpeedX(0.0f);
-        player->setSpeedY(-0.01f);
-        player->dead();
+        switch (player->getCollidedSide(collided.back())) {
+            case 1: player->jump();
+                break;
+            case 2: player->runToTheRight();
+                break;
+            case 3: player->stop();
+                break;
+            case 4: player->runToTheLeft();
+                break;
+            default: player->stop();
+                break;
+        }
+        //player->dead();
         collided.pop_back();
     }
 }
