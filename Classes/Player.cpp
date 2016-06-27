@@ -6,12 +6,13 @@
 
 USING_NS_CC;
 
-Player::Player(cocos2d::Layer *layer, std::string playerType) :
-    AnimatedEntity(playerType)
+Player::Player(cocos2d::Layer *_layer, std::string playerType) : AnimatedEntity(playerType)
 {
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
+    layer = _layer;
     layer->addChild(this);
+    ObjectList::getInstance()->addObject(this);
     scheduleUpdate();
     resume();
 }
@@ -21,6 +22,7 @@ void Player::shoot() {
     attacked = true;
     attackDuration = ANIMATION_INTERVAL * 10;
     startAnimation(shootFrames, ANIMATION_INTERVAL, false);
+    Bullet* bullet = new Bullet(layer, 500, 100, 1, 4);
 }
 
 void Player::collide() {

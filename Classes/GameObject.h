@@ -26,14 +26,13 @@ public:
     virtual void collide() {}
     virtual void inflictDamage(int damage) {}
     virtual int getDamage () { return 0;}
-    ~GameObject();
-    
     virtual void setSpeedY(float velocity) {}
     virtual void setSpeedX(float velocity) {}
     virtual short getDirection() { return 0; }
     virtual bool getJumpDuration() { return false; }
     virtual void setJumpDuration(bool set) {}
     virtual bool isFalling() { return false; }
+    ~GameObject();
 
 private:
     cocos2d::Rect hitBox;//for collision check

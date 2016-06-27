@@ -8,6 +8,7 @@
 #include "AnimatedEntity.h"
 #include <cmath>
 #include "Constants.h"
+#include "ObjectList.h"
 
 #define JUMP_INTERVAL 0.08
 #define ANIMATION_INTERVAL 0.05

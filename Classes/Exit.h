@@ -6,6 +6,7 @@
 #define MYGAME_EXIT_H
 
 #include "GameObject.h"
+#include "ObjectList.h"
 
 class Exit : public GameObject {
 public:

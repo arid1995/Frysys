@@ -43,10 +43,8 @@ bool Game::init()
 
     //just a test delete when you want to {
     player = new Player(this, "ninja");
-    objects.push_back(player);
     
     anusKnight = new Enemy(this, "knight");
-    objects.push_back(anusKnight);
     
 
     /*for (int i = 0; i < 5; i++) {
@@ -56,10 +54,9 @@ bool Game::init()
     }*/
 
     Exit *exit = new Exit(this, Vec2(650, 70));
-    ObjectList::getInstance()->addObject(exit);
     
-    ground->eGround(objects);
-    
+    ground->eGround(ObjectList::getInstance()->getList());
+
     camera = Follow::create(player, Rect::ZERO);
     camera->retain();
     runAction(camera);

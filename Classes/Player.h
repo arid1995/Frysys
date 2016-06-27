@@ -8,6 +8,8 @@
 #include "AnimatedEntity.h"
 #include <cmath>
 #include "Constants.h"
+#include "Bullet.h"
+#include "ObjectList.h"
 
 class Player : public AnimatedEntity
 {
@@ -20,6 +22,7 @@ public:
     void inflictDamage(int damage);
     int getDamage ();
 private:
+    cocos2d::Layer* layer;
     int lives;
     int damage;
 };
