@@ -51,6 +51,7 @@ protected:
     cocos2d::Vec2 origin;
     //gotta find better solution to this shit
     bool jumped;
+    //initializes animation with frameCount sprite frames named by /namePattern (frameNumber).png/
     bool jumpDuration;
     float attackDuration;//shows when to switch to idle or run animation (simply counting down
     bool attacked;//shows whether player jumped or attacked

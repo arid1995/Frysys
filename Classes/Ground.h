@@ -15,11 +15,11 @@ class Ground: public cocos2d::Layer
 public:
     Ground();
     
-    void eGround( Player* player );
+    void eGround( std::list<GameObject*> objects);
     cocos2d::Point positionForTileCoordinate(cocos2d::Size s, cocos2d::Point point);
     cocos2d::TMXTiledMap* getMap();
     void loadMap(const char* name);
-    void getCollisionTiles();
+    void getCollisionTiles(GameObject* player);
     cocos2d::Point getTilePosition(cocos2d::Sprite* sprite);
     void getSizes();
     void update(float dt);
@@ -30,11 +30,13 @@ private:
     cocos2d::TMXTiledMap* map;
     cocos2d::TMXLayer* walls;
     cocos2d::TMXLayer* sky;
-    Player* player;
+    //Player* player;
+    //dEnemy* anusKnight;
     float scale;
     cocos2d::Size mapContentSize;
     cocos2d::Point mapPosition;
     cocos2d::Size tileSize;
     cocos2d::Size mapRowCol;
     cocos2d::Rect* tileArr = new cocos2d::Rect[8];
+    std::list<GameObject*> objects;
 };
