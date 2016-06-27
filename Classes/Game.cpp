@@ -28,57 +28,19 @@ bool Game::init()
     }
 
     this->visibleSize = Director::getInstance()->getVisibleSize();
-    //visibleSize = Size(1000, 1000);
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    ground = new Ground();
-    ground->loadMap("level1.tmx");
-    addChild(ground->getMap());
-
-    //loading textures into cache
-    cache = SpriteFrameCache::getInstance();
-    cache->addSpriteFramesWithFile("ninja.plist", "ninja.png");
-    cache->addSpriteFramesWithFile("knight.plist", "knight.png");
-    cache->addSpriteFramesWithFile("objects.plist", "objects.png");
-
-    //just a test delete when you want to {
-    player = new Player(this, "ninja");
     
-    anusKnight = new Enemy(this, "knight");
+    auto menu_item_1 = MenuItemFont::create("Play", CC_CALLBACK_1(Game::Play, this));
+    auto menu_item_2 = MenuItemFont::create("Highscores", CC_CALLBACK_1(Game::Highscores, this));
+    auto menu_item_3 = MenuItemFont::create("Settings", CC_CALLBACK_1(Game::Settings, this));
     
-
-    /*for (int i = 0; i < 5; i++) {
-        Enemy *anusKnight = new Enemy(this, "knight");
-        ObjectList::getInstance()->addObject(anusKnight);
-        anusKnight->setPosition(400+i*70, 200);
-    }*/
-
-    Exit *exit = new Exit(this, Vec2(650, 70));
+    menu_item_1->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*3));
+    menu_item_2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*2));
+    menu_item_3->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*1));
     
-    ground->eGround(ObjectList::getInstance()->getList());
-
-    camera = Follow::create(player, Rect::ZERO);
-    camera->retain();
-    runAction(camera);
-    
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        auto eventListener = EventListenerKeyboard::create();
-        Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
-        eventListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPressed, this);
-        eventListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
-    #else
-        auto eventListener = EventListenerTouchOneByOne::create();
-        eventListener->setSwallowTouches(true);
-        eventListener->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
-        eventListener->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved, this);
-        eventListener->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
-        eventListener->onTouchCancelled = CC_CALLBACK_2(Game::onTouchCancelled, this);
-        isTouching = false;
-    #endif
-
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
-
-    scheduleUpdate();
+    auto *menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, NULL);
+    menu->setPosition(Point(0,0));
+    this->addChild(menu);
     
     return true;
 }
@@ -181,6 +143,64 @@ void Game::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event) {
     onTouchEnded(touch, event);
 }
 
+void Game::Play(cocos2d::Ref *pSender){
+    ground = new Ground();
+    ground->loadMap("level1.tmx");
+    addChild(ground->getMap());
+    
+    cache = SpriteFrameCache::getInstance();
+    cache->addSpriteFramesWithFile("ninja.plist", "ninja.png");
+    cache->addSpriteFramesWithFile("knight.plist", "knight.png");
+    cache->addSpriteFramesWithFile("objects.plist", "objects.png");
+    
+    player = new Player(this, "ninja");
+    
+    anusKnight = new Enemy(this, "knight");
+    
+    Exit *exit = new Exit(this, Vec2(650, 70));
+    
+    ground->eGround(ObjectList::getInstance()->getList());
+    
+    camera = Follow::create(player, Rect::ZERO);
+    camera->retain();
+    runAction(camera);
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+    auto eventListener = EventListenerKeyboard::create();
+    Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
+    eventListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPressed, this);
+    eventListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
+#else
+    auto eventListener = EventListenerTouchOneByOne::create();
+    eventListener->setSwallowTouches(true);
+    eventListener->onTouchBegan = CC_CALLBACK_2(Game::onTouchBegan, this);
+    eventListener->onTouchMoved = CC_CALLBACK_2(Game::onTouchMoved, this);
+    eventListener->onTouchEnded = CC_CALLBACK_2(Game::onTouchEnded, this);
+    eventListener->onTouchCancelled = CC_CALLBACK_2(Game::onTouchCancelled, this);
+    isTouching = false;
+#endif
+    
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+    
+    scheduleUpdate();
+}
+
+void Game::Highscores(cocos2d::Ref *pSender){
+    CCLOG("Highscores");
+}
+
+void Game::Settings(cocos2d::Ref *pSender){
+    CCLOG("Settings");
+}
+
+void Game::menuCloseCallback(Ref* pSender)
+{
+    Director::getInstance()->end();
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
 
 
 

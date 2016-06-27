@@ -22,6 +22,12 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(Game);
+    
+    void menuCloseCallback(Ref* pSender);
+    cocos2d::Menu *menu;
+    void Play(cocos2d::Ref *pSender);
+    void Highscores(cocos2d::Ref *pSender);
+    void Settings(cocos2d::Ref *pSender);
 
 private:
     void SetPhysicsWorld(cocos2d::PhysicsWorld *world) { sceneWorld = world; };
@@ -47,4 +53,5 @@ private:
     std::list<GameObject*> objects;
     cocos2d::Follow *camera;
     cocos2d::Size visibleSize;
+    
 };
