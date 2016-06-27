@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 
-Bullet::Bullet(cocos2d::Layer* _layer, float x, float y, int _direction, float speed) {
+Bullet::Bullet(cocos2d::Layer* _layer, float x, float y, int _direction, float speed) : damage(1) {
     initWithSpriteFrameName("Kunai.png");
     setHitBox(getTextureRect());
     setSpeedX(speed);
@@ -28,14 +28,7 @@ void Bullet::update(float delta) {
     //FIXME::Hardcode!
     if ((hitbox.origin.x > 950 || hitbox.origin.y > 950) || (hitbox.origin.x < 50 || hitbox.origin.y < 50)) {
         layer->removeChild(this);
-        delete this;
-        return;
-    }
-
-    std::list<GameObject*> collided = getCollidedObjects(ObjectList::getInstance()->getList());
-
-    if (collided.size() != 0) {
-        layer->removeChild(this);
+        ObjectList::getInstance()->deleteObject(this);
         delete this;
         return;
     }
@@ -45,4 +38,12 @@ void Bullet::update(float delta) {
     } else {
         setFlippedX(false);
     }
+}
+
+int Bullet::getDamage() {
+    layer->removeChild(this);
+    int _damage = damage;
+    ObjectList::getInstance()->deleteObject(this);
+    delete this;
+    return _damage;
 }
