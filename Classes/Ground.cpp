@@ -18,14 +18,13 @@ void Ground::eGround(std::list<GameObject*> obj)
     CCLOG("GROUND");
     //player = playerTMP;
     //anusKnight = anusKnightTMP;
-    objects = obj;
     map->setScale(SCALE_FACTOR);
     getSizes();
     walls = map->getLayer("wall");
     // FIXME: consider using getSize instead of getContentSize
     int pos = 10;
     
-    for (std::list<GameObject*>::iterator it=objects.begin(); it != objects.end(); ++it){
+    for (std::list<GameObject*>::iterator it=ObjectList::getInstance()->getList().begin(); it != ObjectList::getInstance()->getList().end(); ++it){
         it.operator*()->setPosition(positionForTileCoordinate(it.operator*()->getContentSize(), Point(pos,10)));
         pos += 3;
     }
@@ -93,7 +92,7 @@ void Ground::getSizes(){
 
 void Ground::update(float dt){
     
-    for (std::list<GameObject*>::iterator it=objects.begin(); it != objects.end(); ++it){
+    for (std::list<GameObject*>::iterator it=ObjectList::getInstance()->getList().begin(); it != ObjectList::getInstance()->getList().end(); ++it){
     
     Rect player_rect = Rect(it.operator*()->getPosition().x - it.operator*()->getContentSize().width/2,
                         it.operator*()->getPosition().y - it.operator*()->getContentSize().height/2,

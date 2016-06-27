@@ -6,11 +6,12 @@
 
 USING_NS_CC;
 
-Enemy::Enemy(Layer *layer, std::string enemyType) : //only "knight" is allowed yet
+Enemy::Enemy(Layer *_layer, std::string enemyType) : //only "knight" is allowed yet
         AnimatedEntity(enemyType)
 {
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
+    layer = _layer;
     layer->addChild(this);
     ObjectList::getInstance()->addObject(this);
     scheduleUpdate();
@@ -43,6 +44,14 @@ void Enemy::update(float delta) {
         jumped = false;
     }
 
+    std::list<GameObject*> collided = getCollidedObjects(ObjectList::getInstance()->getList());
+
+    if (collided.size() != 0) {
+        for (std::list<GameObject*>::iterator i = collided.begin(); i != collided.end(); i++) {
+            lives -= i.operator*()->getDamage();
+        }
+    }
+
     //mirror sprites if direction is left
     if (direction == -1) {
         setFlippedX(true);
@@ -50,4 +59,11 @@ void Enemy::update(float delta) {
         setFlippedX(false);
     }
     setSpeed(Vec2(getSpeedX(), getSpeedY()));
+
+    if (lives <= 0) {
+        layer->removeChild(this);
+        ObjectList::getInstance()->deleteObject(this);
+        delete this;
+        return;
+    }
 }

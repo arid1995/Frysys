@@ -8,10 +8,12 @@
 class Bullet : public DynamicObject {
 public:
     Bullet(cocos2d::Layer *layer, float x, float y, int direction, float speed = 4);
-    ~Bullet() {};
+    ~Bullet() { };
     void update(float delta);
+    int getDamage();
 
 private:
     cocos2d::Layer *layer;
     int direction;
+    int damage;
 };
