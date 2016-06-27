@@ -74,6 +74,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // run
     //add comment
+    //one more comment
     director->runWithScene(scene);
 
     return true;
