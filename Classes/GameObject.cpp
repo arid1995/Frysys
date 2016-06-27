@@ -46,6 +46,7 @@ void GameObject::setPosition(const Vec2& position)
 std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &leveldObjects) {
     std::list<GameObject*> collided;
     for (std::list<GameObject*>::iterator i = leveldObjects.begin(); i != leveldObjects.end(); i++) {
+        if (i.operator*() == this) continue;
         if (i.operator*()->getPosition().x > hitBox.origin.x) {
             if ((i.operator*()->getPosition().x - (hitBox.origin.x - hitBox.size.width)) >
                 (hitBox.size.width + i.operator*()->getSize().width)) {
@@ -122,9 +123,6 @@ void GameObject::setHitBox(cocos2d::Rect hitbox) {
 Rect GameObject::getHitBox() {
     return hitBox;
 }
-
-// TODO: add collision checker that works with std::list
-// TODO:  add function that shows which side is collided
 
 GameObject::~GameObject() {
 

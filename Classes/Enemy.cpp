@@ -12,6 +12,7 @@ Enemy::Enemy(Layer *layer, std::string enemyType) : //only "knight" is allowed y
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
     layer->addChild(this);
+    ObjectList::getInstance()->addObject(this);
     scheduleUpdate();
     resume();
 }

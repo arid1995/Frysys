@@ -12,11 +12,6 @@ public:
     DynamicObject();
     DynamicObject(int width, int height, int x, int y, cocos2d::SpriteFrame *spriteFrame);
     DynamicObject(int width, int height, int x, int y, const std::string &spriteFrameName);
-    virtual void jump() {};
-    virtual void runToTheLeft() {};
-    virtual void runToTheRight() {};
-    virtual void attack() {};
-    virtual void stop() {};
     void setSpeed(cocos2d::Vec2 velocity);
     void setSpeedY(float velocity);
     void setSpeedX(float velocity);
