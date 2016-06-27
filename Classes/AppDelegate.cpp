@@ -73,6 +73,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     CCLOG("hello");
 
     // run
+    //add comment
     director->runWithScene(scene);
 
     return true;
