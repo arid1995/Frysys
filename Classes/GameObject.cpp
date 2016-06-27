@@ -123,6 +123,9 @@ Rect GameObject::getHitBox() {
     return hitBox;
 }
 
+// TODO: add collision checker that works with std::list
+// TODO:  add function that shows which side is collided
+
 GameObject::~GameObject() {
 
 };

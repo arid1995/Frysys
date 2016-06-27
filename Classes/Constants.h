@@ -10,7 +10,7 @@
 #define ANIMATION_INTERVAL 0.05
 #define PLAYER_LIVES_COUNT 3
 #define PLAYER_DAMAGE 1
-const float SCALE_FACTOR = 1.0f;
-const float PLAYER_MAX_VELOCITY = 10.0f;
-const float PLAYER_JUMP_VELOCITY = 40.0f;
-const float DAMPING = 0.87f;
+#define SCALE_FACTOR 1.0f
+#define PLAYER_MAX_VELOCITY 10.0f
+#define PLAYER_JUMP_VELOCITY 40.0f
+#define DAMPING 0.87f
