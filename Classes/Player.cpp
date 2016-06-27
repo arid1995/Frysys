@@ -18,11 +18,9 @@ Player::Player(cocos2d::Layer *_layer, std::string playerType) : AnimatedEntity(
 }
 
 void Player::shoot() {
-    if (isInTheAir()) return;
-    attacked = true;
     attackDuration = ANIMATION_INTERVAL * 10;
     startAnimation(shootFrames, ANIMATION_INTERVAL, false);
-    Bullet* bullet = new Bullet(layer, 500, 100, 1, 4);
+    Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 20), getPosition().y, direction, 10);
 }
 
 void Player::collide() {

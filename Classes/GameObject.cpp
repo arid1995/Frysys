@@ -33,6 +33,7 @@ void GameObject::setSize(int width, int height) {
     hitBox.size = Size(width, height);
 }
 
+//while setting sprite position also sets hitbox position
 void GameObject::setPosition(int x, int y) {
     Sprite::setPosition(x, y);
     hitBox.origin = Vec2(x, y);
@@ -47,27 +48,17 @@ std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &le
     std::list<GameObject*> collided;
     for (std::list<GameObject*>::iterator i = leveldObjects.begin(); i != leveldObjects.end(); i++) {
         if (i.operator*() == this) continue;
-        if (i.operator*()->getPosition().x > hitBox.origin.x) {
-            if ((i.operator*()->getPosition().x - (hitBox.origin.x - hitBox.size.width)) >
-                (hitBox.size.width + i.operator*()->getSize().width)) {
-                continue;
-            }
-        } else {
-            if ((hitBox.origin.x - (i.operator*()->getPosition().x - i.operator*()->getSize().width)) >
-                (hitBox.size.width + i.operator*()->getSize().width)) {
-                continue;
-            }
+        if ((i.operator*()->getPosition().x + i.operator*()->getSize().width / 2) < (hitBox.origin.x - hitBox.size.width)) {
+            continue;
         }
-        if (i.operator*()->getPosition().y > hitBox.origin.y) {
-            if (((i.operator*()->getPosition().y + i.operator*()->getSize().height) - hitBox.origin.y) >
-                (hitBox.size.height + i.operator*()->getSize().height)) {
-                continue;
-            }
-        } else {
-            if (((hitBox.origin.y + hitBox.size.height) - i.operator*()->getPosition().y) >
-                (hitBox.size.height + i.operator*()->getSize().height)) {
-                continue;
-            }
+        if ((i.operator*()->getPosition().x - i.operator*()->getSize().width / 2) > (hitBox.origin.x + hitBox.size.width)) {
+            continue;
+        }
+        if ((i.operator*()->getPosition().y - i.operator*()->getSize().height / 2) > (hitBox.origin.y + hitBox.size.height)) {
+            continue;
+        }
+        if ((i.operator*()->getPosition().y + i.operator*()->getSize().height/ 2) < (hitBox.origin.y + hitBox.size.height)) {
+            continue;
         }
         collided.push_back(*i);
     }
@@ -78,25 +69,21 @@ std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &le
 int GameObject::getCollidedSide(GameObject* collidedObject) {
     float yIntersection = 0;
     float xIntersection = 0;
-    //left
-    if (collidedObject->getPosition().x < hitBox.origin.x) {
-        xIntersection = (collidedObject->getPosition().x - hitBox.origin.x) + collidedObject->getSize().width;
-        if (xIntersection > hitBox.size.width) xIntersection = hitBox.size.width;
-    }
     //right
-    if (collidedObject->getPosition().x > hitBox.origin.x) {
-        xIntersection = -((hitBox.origin.x - collidedObject->getPosition().x) + collidedObject->getSize().width);
-        if (xIntersection > collidedObject->hitBox.size.width) xIntersection = -collidedObject->hitBox.size.width;
+    if (collidedObject->getPosition().x < hitBox.origin.x) {
+        xIntersection = collidedObject->getPosition().x + collidedObject->getSize().width / 2 - (hitBox.origin.x - hitBox.size.width);
     }
-    //bottom
-    if (collidedObject->getPosition().y < hitBox.origin.y) {
-        yIntersection = (collidedObject->getPosition().y - hitBox.origin.y) + collidedObject->getSize().height;
-        if (yIntersection > hitBox.size.height) yIntersection = hitBox.size.height;
+    //left
+    if (collidedObject->getPosition().x > hitBox.origin.x) {
+        xIntersection = -(hitBox.origin.x + hitBox.size.width - (collidedObject->getPosition().x - collidedObject->getSize().width / 2));
     }
     //top
+    if (collidedObject->getPosition().y < hitBox.origin.y) {
+        yIntersection = hitBox.origin.y + hitBox.size.height - (collidedObject->getPosition().y - collidedObject->getSize().height / 2);
+    }
+    //bottom
     if (collidedObject->getPosition().y > hitBox.origin.y) {
-        yIntersection = -((hitBox.origin.y - collidedObject->getPosition().y) + collidedObject->getSize().height);
-        if (yIntersection > collidedObject->hitBox.size.height) yIntersection = -collidedObject->hitBox.size.height;
+        yIntersection = -(collidedObject->getPosition().y + collidedObject->getSize().height / 2 - (hitBox.origin.y - hitBox.size.height));
     }
 
     //is intersection taking place in horizontal plane (left or right)
@@ -108,11 +95,11 @@ int GameObject::getCollidedSide(GameObject* collidedObject) {
     }
 
     if (horizontal) {
-        if (xIntersection > 0) return 2;//left
-        else return 4;//right
+        if (xIntersection > 0) return 2;//right
+        else return 4;//left
     } else {
-        if (yIntersection > 0) return 1;//bottom
-        else return 3;//top
+        if (yIntersection > 0) return 1;//top
+        else return 3;//bottom
     }
 }
 
