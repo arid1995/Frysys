@@ -27,7 +27,12 @@ void Player::inflictDamage(int damage) {
 }
 
 void Player::update(float delta) {
-    std::list<GameObject*> collided = baseUpdate(delta);
+    if (!isAlive()) {
+        return;
+    }
+
+    std::list<GameObject *> collided = baseUpdate(delta);
+}
 
 int Player::getVelocity(){
     return PLAYER_MAX_VELOCITY;
