@@ -18,3 +18,7 @@ std::list<GameObject*>& ObjectList::getList() {
 void ObjectList::deleteObject(GameObject* object) {
     objects.remove(object);
 }
+
+GameObject* ObjectList::getFirstObject(){
+    return objects.front();
+}

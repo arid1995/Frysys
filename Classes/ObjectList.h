@@ -26,5 +26,6 @@ public:
     void addObject(GameObject* object);
     std::list<GameObject*>& getList();
     void deleteObject(GameObject* object);
+    GameObject* getFirstObject();
 };
 

@@ -52,5 +52,6 @@ private:
     Enemy *anusKnight;
     cocos2d::Follow *camera;
     cocos2d::Size visibleSize;
+    cocos2d::Sprite** heart = NULL;
     
 };

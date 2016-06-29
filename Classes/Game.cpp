@@ -92,17 +92,15 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 }
 
 void Game::update(float dt){
-    //Vec2 locSprite = player->getSkin()->getPosition();
-    //this->setPosition(Point(-locSprite.x + visibleSize.width/2, -locSprite.y + visibleSize.height/2));
-
-    //rough example of how to use collisions
-    //makes player run into a death sequence if he collided with something
-    /*if(player->getCollidedObjects(objects).size() != 0) {
-        player->stop();
-        player->setSpeedX(0.0f);
-        player->setSpeedY(-0.1f);
-        player->dead();
-    }*/
+    int i = 0;
+    Point ptPlayer = player->getPosition();
+    Size sz = getContentSize();
+    for (i = 0; i < anusKnight->getLives(); i++){
+        heart[i]->setPosition(Point(ptPlayer.x - sz.width/2.5 + i*20, ptPlayer.y + sz.height/2.5));
+    }
+    for (;i < PLAYER_LIVES_COUNT; i++){
+        heart[i]->setVisible(false);
+    }
 }
 
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) {
@@ -160,6 +158,13 @@ void Game::Play(cocos2d::Ref *pSender){
     Exit *exit = new Exit(this, Vec2(650, 70));
     
     ground->eGround(ObjectList::getInstance()->getList());
+    
+    heart = (Sprite**) malloc (PLAYER_LIVES_COUNT*sizeof(Sprite*));
+    
+    for (int i = 0; i < 3; i++){
+        heart[i] = Sprite::create("heart.png");
+        addChild(heart[i]);
+    }
     
     camera = Follow::create(player, Rect::ZERO);
     camera->retain();
