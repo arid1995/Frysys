@@ -56,6 +56,7 @@ void AnimatedEntity::startAnimation(Vector<SpriteFrame*> animVector, float animS
     Animation* animation = Animation::createWithSpriteFrames(animVector, animSpeed);
     if (looped) {
         runAction(RepeatForever::create(Animate::create(animation)));
+        
     } else
     {
         runAction(Animate::create(animation));
@@ -79,10 +80,9 @@ void AnimatedEntity::runToTheLeft() {
 }
 
 void AnimatedEntity::runToTheRight() {
-    //if (isInTheAir()) return;
+    if (isInTheAir()) return;
     direction = 1;
     startAnimation(runFrames, ANIMATION_INTERVAL);
-    //this->skinBody->setVelocity(Vec2(RUN_VELOCITY, 0));
     setSpeedX(2);
 }
 
@@ -94,7 +94,6 @@ void AnimatedEntity::attack() {
 }
 
 void AnimatedEntity::stop() {
-    //if (isInTheAir()) return;
     startAnimation(idleFrames, ANIMATION_INTERVAL);
     setSpeedX(0);
 }

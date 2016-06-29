@@ -28,10 +28,14 @@ public:
     virtual int getDamage () { return 0;}
     virtual void setSpeedY(float velocity) {}
     virtual void setSpeedX(float velocity) {}
+    virtual float getSpeedX() { return 0; }
     virtual short getDirection() { return 0; }
     virtual bool getJumpDuration() { return false; }
     virtual void setJumpDuration(bool set) {}
     virtual bool isFalling() { return false; }
+    virtual void runToTheLeft() {}
+    virtual void runToTheRight() {}
+    virtual void stop() {}
     ~GameObject();
 
 private:

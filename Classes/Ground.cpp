@@ -104,7 +104,18 @@ void Ground::update(float dt){
     if (player_rect.intersectsRect(tileArr[4]) && it.operator*()->isFalling()){
         it.operator*()->setSpeedY(0);
         it.operator*()->setJumpDuration(false);
+        if (it.operator*()->getSpeedX() > 0){
+            it.operator*()->runToTheRight();
+            break;
+        }
+        if (it.operator*()->getSpeedX() < 0){
+            it.operator*()->runToTheLeft();
+        }
+        else{
+            it.operator*()->stop();
+        }
     }
+        
     if (!(player_rect.intersectsRect(tileArr[4]) || it.operator*()->getJumpDuration())){
         it.operator*()->setSpeedY(1);
     }
