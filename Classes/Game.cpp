@@ -33,7 +33,7 @@ bool Game::init()
     auto menu_item_1 = MenuItemFont::create("Play", CC_CALLBACK_1(Game::Play, this));
     auto menu_item_2 = MenuItemFont::create("Highscores", CC_CALLBACK_1(Game::Highscores, this));
     auto menu_item_3 = MenuItemFont::create("Settings", CC_CALLBACK_1(Game::Settings, this));
-    
+
     menu_item_1->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*3));
     menu_item_2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*2));
     menu_item_3->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*1));
@@ -156,7 +156,8 @@ void Game::Play(cocos2d::Ref *pSender){
     player = new Player(this, "ninja");
     
     anusKnight = new Enemy(this, "knight");
-    
+
+    //FIXME::Hardcode!
     Exit *exit = new Exit(this, Vec2(650, 70));
     
     ground->eGround(ObjectList::getInstance()->getList());

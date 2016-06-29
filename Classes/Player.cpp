@@ -23,7 +23,7 @@ void Player::shoot() {
     Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 25), getPosition().y, direction, 5);
 }
 
-void Player::collide() {
+void Player::collide(GameObject* object) {
     // TODO: write here what should player do on collision
 }
 void Player::inflictDamage(int damage) {
@@ -41,23 +41,5 @@ void Player::dead() {
 }
 
 void Player::update(float delta) {
-    //FIXME: A big perfomance issue, has to be fixed
-    if (attackDuration > 0) {
-        attackDuration -= delta;
-    } else
-        if (attacked) {
-            attacked = false;
-            if (getSpeedX() != 0)
-                startAnimation(runFrames, ANIMATION_INTERVAL);
-            else
-                startAnimation(idleFrames, ANIMATION_INTERVAL);
-        }
-
-    //mirror sprites if direction is left
-    if (direction == -1) {
-        setFlippedX(true);
-    } else {
-        setFlippedX(false);
-    }
-    setSpeed(Vec2(getSpeedX(), getSpeedY()));
+    std::list<GameObject*> collided = baseUpdate(delta);
 }

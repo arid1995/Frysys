@@ -18,7 +18,6 @@ class Enemy : public AnimatedEntity
 public:
     Enemy(cocos2d::Layer *layer, std::string enemyType);
     void update(float delta);
-    void collide();
     void inflictDamage(int damage);
     int getDamage();
 

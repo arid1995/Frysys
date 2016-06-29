@@ -50,6 +50,7 @@ std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &le
         if (i.operator*() == this) continue;
         Rect rct1 = hitBox;
         Rect rct2 = i.operator*()->hitBox;
+        //because FUCK COMMON SENSE that's why
         rct1.origin.y -= rct1.size.height / 2;
         rct2.origin.y -= rct2.size.height / 2;
         if (rct1.intersectsRect(rct2)) {
@@ -64,7 +65,6 @@ std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &le
 int GameObject::getCollidedSide(GameObject* collidedObject) {
     float yIntersection = 0;
     float xIntersection = 0;
-    //right
     float x1 = hitBox.origin.x;
     float y1 = hitBox.origin.y;
     float width1 = hitBox.size.width / 2;

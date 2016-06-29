@@ -116,3 +116,39 @@ void AnimatedEntity::setJumpDuration(bool set){
 bool AnimatedEntity::getJumpDuration(){
     return jumpDuration;
 }
+
+void AnimatedEntity::collide(GameObject* object) {
+
+}
+
+std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
+    if (attackDuration > 0) {
+        attackDuration -= delta;
+    } else
+    if (attacked) {
+        attacked = false;
+        if (getSpeedX() != 0)
+            startAnimation(runFrames, ANIMATION_INTERVAL);
+        else
+            startAnimation(idleFrames, ANIMATION_INTERVAL);
+    }
+
+    std::list<GameObject*> collided = getCollidedObjects(ObjectList::getInstance()->getList());
+
+    if (collided.size() != 0) {
+        for (std::list<GameObject*>::iterator i = collided.begin(); i != collided.end(); i++) {
+
+        }
+    }
+
+    //mirror sprites if direction is left
+    if (direction == -1) {
+        setFlippedX(true);
+    } else {
+        setFlippedX(false);
+    }
+
+    setSpeed(Vec2(getSpeedX(), getSpeedY()));
+
+    return collided;
+}

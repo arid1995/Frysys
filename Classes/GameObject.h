@@ -23,7 +23,7 @@ public:
     std::list<GameObject*> getCollidedObjects(std::list<GameObject*> &levelObjects);
     //returns number of the collided side. Clockwise: 1 - top, 2..3, 4 - left, 0 - no collision
     int getCollidedSide(GameObject *collidedObject);
-    virtual void collide() {}
+    virtual void collide(GameObject* object) {}
     virtual void inflictDamage(int damage) {}
     virtual int getDamage () { return 0;}
     virtual void setSpeedY(float velocity) {}

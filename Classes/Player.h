@@ -17,7 +17,7 @@ public:
     Player(cocos2d::Layer *layer, std::string playerType);
     void shoot();
     void update(float delta);
-    void collide();
+    void collide(GameObject* object);
     void dead();
     void inflictDamage(int damage);
     int getDamage ();

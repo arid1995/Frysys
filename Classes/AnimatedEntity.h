@@ -8,6 +8,7 @@
 #include "DynamicObject.h"
 #include <cmath>
 #include "Constants.h"
+#include "ObjectList.h"
 
 #define JUMP_INTERVAL 0.08
 #define ANIMATION_INTERVAL 0.05
@@ -22,7 +23,11 @@ public:
     void runToTheRight();
     void attack();
     virtual void shoot() {};
+    //defines sequence of actions when Entity is unalived
     virtual void dead() {};
+    //basic actions that all animated entities must do (must be called from child's update method)
+    std::list<GameObject*> baseUpdate(float delta);
+    void collide(GameObject* object);
     void stop();
     bool isInTheAir();
     void setJumpDuration(bool set);
