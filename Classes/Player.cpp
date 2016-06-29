@@ -55,3 +55,7 @@ void Player::update(float delta) {
         isDamageInflicted = false;
     }
 }
+
+int Player::getVelocity(){
+    return PLAYER_MAX_VELOCITY;
+}

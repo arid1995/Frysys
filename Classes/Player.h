@@ -21,4 +21,5 @@ public:
     void dead();
     void inflictDamage(int damage);
     int getDamage ();
+    int getVelocity();
 };
