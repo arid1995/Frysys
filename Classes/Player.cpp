@@ -20,7 +20,7 @@ Player::Player(cocos2d::Layer *_layer, std::string playerType) : AnimatedEntity(
 void Player::shoot() {
     attackDuration = ANIMATION_INTERVAL * 10;
     startAnimation(shootFrames, ANIMATION_INTERVAL, false);
-    Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 20), getPosition().y, direction, 10);
+    Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 25), getPosition().y, direction, 5);
 }
 
 void Player::collide() {
@@ -31,6 +31,7 @@ void Player::inflictDamage(int damage) {
 }
 
 int Player::getDamage () {
+    return 0;
     // TODO: write here how should player recieve damage
 }
 

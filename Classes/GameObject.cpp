@@ -48,42 +48,87 @@ std::list<GameObject*> GameObject::getCollidedObjects(std::list<GameObject*> &le
     std::list<GameObject*> collided;
     for (std::list<GameObject*>::iterator i = leveldObjects.begin(); i != leveldObjects.end(); i++) {
         if (i.operator*() == this) continue;
-        if ((i.operator*()->getPosition().x + i.operator*()->getSize().width / 2) < (hitBox.origin.x - hitBox.size.width)) {
-            continue;
+        Rect rct1 = hitBox;
+        Rect rct2 = i.operator*()->hitBox;
+        rct1.origin.y -= rct1.size.height / 2;
+        rct2.origin.y -= rct2.size.height / 2;
+        if (rct1.intersectsRect(rct2)) {
+            GameObject *go = *i;
+            collided.push_back(*i);
         }
-        if ((i.operator*()->getPosition().x - i.operator*()->getSize().width / 2) > (hitBox.origin.x + hitBox.size.width)) {
-            continue;
-        }
-        if ((i.operator*()->getPosition().y - i.operator*()->getSize().height / 2) > (hitBox.origin.y + hitBox.size.height)) {
-            continue;
-        }
-        if ((i.operator*()->getPosition().y + i.operator*()->getSize().height/ 2) < (hitBox.origin.y + hitBox.size.height)) {
-            continue;
-        }
-        collided.push_back(*i);
     }
     return collided;
 }
 
-//clockwise: 1 - top, 2..3, 4 - left, 0 - not collided
+//clockwise: 1 - top, 2..3, 4 - left
 int GameObject::getCollidedSide(GameObject* collidedObject) {
     float yIntersection = 0;
     float xIntersection = 0;
     //right
-    if (collidedObject->getPosition().x < hitBox.origin.x) {
-        xIntersection = collidedObject->getPosition().x + collidedObject->getSize().width / 2 - (hitBox.origin.x - hitBox.size.width);
+    float x1 = hitBox.origin.x;
+    float y1 = hitBox.origin.y;
+    float width1 = hitBox.size.width / 2;
+    float height1 = hitBox.size.height / 2;
+    float x2 = collidedObject->getHitBox().origin.x;
+    float y2 = collidedObject->getHitBox().origin.y;
+    float width2 = collidedObject->getHitBox().size.width / 2;
+    float height2 = collidedObject->getHitBox().size.height / 2;
+
+    //Think of it like 2 segments with known width/height and a middle point
+    //horizontal (minus means left)
+    if (x1 > x2) {
+        if ((x1 + width1) > (x2 + width2)) {
+            if ((x2 - width2) < (x1 - width1)) {
+                xIntersection = x2 + width2 - (x1 - width1);
+            }
+            else {
+                xIntersection = width2 * 2;
+            }
+        }
+        else {
+            xIntersection = width1 * 2;
+        }
     }
-    //left
-    if (collidedObject->getPosition().x > hitBox.origin.x) {
-        xIntersection = -(hitBox.origin.x + hitBox.size.width - (collidedObject->getPosition().x - collidedObject->getSize().width / 2));
+    else {
+        if ((x1 + width1) < (x2 + width2)) {
+            if ((x2 - width2) > (x1 - width1)) {
+                xIntersection = -(x1 + width1 - (x2 - width2));
+            }
+            else {
+                xIntersection = -width1 * 2;
+            }
+        }
+        else {
+            xIntersection = -width2 * 2;
+        }
     }
-    //top
-    if (collidedObject->getPosition().y < hitBox.origin.y) {
-        yIntersection = hitBox.origin.y + hitBox.size.height - (collidedObject->getPosition().y - collidedObject->getSize().height / 2);
+
+    //vertical (minus means bottom)
+    if (y1 > y2) {
+        if ((y1 + height1) > (y2 + height2)) {
+            if ((y2 - height2) < (y1 - height1)) {
+                yIntersection = y2 + height2 - (y1 - height1);
+            }
+            else {
+                yIntersection = height2 * 2;
+            }
+        }
+        else {
+            yIntersection = height1 * 2;
+        }
     }
-    //bottom
-    if (collidedObject->getPosition().y > hitBox.origin.y) {
-        yIntersection = -(collidedObject->getPosition().y + collidedObject->getSize().height / 2 - (hitBox.origin.y - hitBox.size.height));
+    else {
+        if ((y1 + height1) < (y2 + height2)) {
+            if ((y2 - height2) > (y1 - height1)) {
+                yIntersection = -(y1 + height1 - (y2 - height2));
+            }
+            else {
+                yIntersection = -height1 * 2;
+            }
+        }
+        else {
+            yIntersection = -height2 * 2;
+        }
     }
 
     //is intersection taking place in horizontal plane (left or right)
@@ -93,13 +138,12 @@ int GameObject::getCollidedSide(GameObject* collidedObject) {
     } else {
         horizontal = true;
     }
-
     if (horizontal) {
-        if (xIntersection > 0) return 2;//right
-        else return 4;//left
+        if (xIntersection > 0) return 4;//right
+        else return 2;//left
     } else {
-        if (yIntersection > 0) return 1;//top
-        else return 3;//bottom
+        if (yIntersection > 0) return 3;//top
+        else return 1;//bottom
     }
 }
 

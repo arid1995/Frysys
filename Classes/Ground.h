@@ -38,5 +38,4 @@ private:
     cocos2d::Size tileSize;
     cocos2d::Size mapRowCol;
     cocos2d::Rect* tileArr = new cocos2d::Rect[8];
-    std::list<GameObject*> objects;
 };

@@ -25,4 +25,5 @@ public:
 private:
     int lives;
     int damage;
+    cocos2d::Layer* layer;
 };

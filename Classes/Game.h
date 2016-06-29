@@ -50,7 +50,6 @@ private:
     Ground* ground;
     Player *player;
     Enemy *anusKnight;
-    std::list<GameObject*> objects;
     cocos2d::Follow *camera;
     cocos2d::Size visibleSize;
     
