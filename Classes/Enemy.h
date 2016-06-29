@@ -20,9 +20,14 @@ public:
     void update(float delta);
     void inflictDamage(int damage);
     int getDamage();
+    int getLives();
+    void run(cocos2d::Point enemyPosition, cocos2d::Point playerPosition);
+    void fight(cocos2d::Point enemyPosition, cocos2d::Point playerPosition);
 
 private:
     int lives;
     int damage;
     cocos2d::Layer* layer;
+    bool startRun = false;
+    bool startFight = false;
 };

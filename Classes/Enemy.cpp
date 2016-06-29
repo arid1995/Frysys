@@ -40,4 +40,49 @@ void Enemy::update(float delta) {
         delete this;
         return;
     }
+    
+    GameObject* player = ObjectList::getInstance()->getFirstObject();
+    Point enemyPosition = getPosition();
+    Point playerPosition = player->getPosition();
+    int dist = std::abs(enemyPosition.x - playerPosition.x);
+    if (dist < 100 && dist > 70){
+        if (!startRun){
+            startRun = true;
+            run(enemyPosition, playerPosition);
+        }
+    }
+    else{
+        startRun = false;
+        if (dist > 40)
+            stop();
+    }
+    if (dist < 40){
+        if (!startFight){
+            startFight = true;
+            fight(enemyPosition, playerPosition);
+        }
+
+    }
+    else{
+        startFight = false;
+    }
 }
+
+int Enemy::getLives(){
+    return lives;
+}
+
+void Enemy::run(Point enemyPosition, Point playerPosition){
+    if (enemyPosition.x - playerPosition.x < 0)
+        runToTheRight();
+    else
+        runToTheLeft();
+}
+
+void Enemy::fight(Point enemyPosition, Point playerPosition){
+    attack();
+}
+
+
+
+
