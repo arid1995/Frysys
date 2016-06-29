@@ -20,5 +20,4 @@ public:
     void collide(GameObject* object);
     void dead();
     void inflictDamage(int damage);
-    int getDamage ();
 };

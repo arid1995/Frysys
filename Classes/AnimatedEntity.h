@@ -37,7 +37,8 @@ public:
     };
 
     //defines sequence of actions when Entity is unalived
-    virtual void dead() {};
+    void dead();
+    int getDamage();
     //basic actions that all animated entities must do (must be called from child's update method)
     std::list<GameObject*> baseUpdate(float delta);
     void collide(GameObject* object);

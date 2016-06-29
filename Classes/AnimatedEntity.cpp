@@ -64,6 +64,10 @@ void AnimatedEntity::startAnimation(Vector<SpriteFrame*> animVector, float animS
     }
 }
 
+void AnimatedEntity::dead() {
+    startAnimation(deadFrames, ANIMATION_INTERVAL, false);
+    // TODO: write other stuff that needs to happen when player dies
+}
 
 void AnimatedEntity::jump() {
     if (isInTheAir()) return;
@@ -115,6 +119,16 @@ void AnimatedEntity::collide(GameObject* object) {
 
 }
 
+int AnimatedEntity::getDamage () {
+    if (attacked) {
+        int dmg = damage;
+        damage = 0;
+        isDamageInflicted = true;
+        return dmg;
+    }
+    return 0;
+}
+
 std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
     if (attackDuration > 0) {
         attackDuration -= delta;
@@ -131,7 +145,7 @@ std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
 
     if (collided.size() != 0) {
         for (std::list<GameObject*>::iterator i = collided.begin(); i != collided.end(); i++) {
-
+            lives -= i.operator*()->getDamage();
         }
     }
 
@@ -143,6 +157,23 @@ std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
     }
 
     setSpeed(Vec2(getSpeedX(), getSpeedY()));
+
+    if (lives <= 0) {
+        layer->removeChild(this);
+        ObjectList::getInstance()->deleteObject(this);
+        delete this;
+        return collided;
+    }
+
+    //for melee attack
+    if (attacked && !isDamageInflicted) {
+        isDamageInflicted = true;
+        damage = 1;
+    }
+
+    if (!attacked) {
+        isDamageInflicted = false;
+    }
 
     return collided;
 }
