@@ -21,8 +21,4 @@ public:
     void dead();
     void inflictDamage(int damage);
     int getDamage ();
-private:
-    cocos2d::Layer* layer;
-    int lives;
-    int damage;
 };

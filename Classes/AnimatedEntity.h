@@ -9,6 +9,7 @@
 #include <cmath>
 #include "Constants.h"
 #include "ObjectList.h"
+#include "Bullet.h"
 
 #define JUMP_INTERVAL 0.08
 #define ANIMATION_INTERVAL 0.05
@@ -17,12 +18,24 @@ class AnimatedEntity : public DynamicObject
 {
 public:
     //constructs an animated object with given spriteshit and xml .plist file
-    AnimatedEntity(std::string type);
+    AnimatedEntity(std::string type, cocos2d::Layer *_layer);
     void jump();
     void runToTheLeft();
     void runToTheRight();
-    void attack();
-    virtual void shoot() {};
+
+    virtual void attack() {
+        if (isInTheAir()) return;
+        attacked = true;
+        attackDuration = ANIMATION_INTERVAL * 10;
+        startAnimation(attackFrames, ANIMATION_INTERVAL, false);
+    }
+
+    virtual void shoot() {
+        attackDuration = ANIMATION_INTERVAL * 10;
+        startAnimation(shootFrames, ANIMATION_INTERVAL, false);
+        Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 25), getPosition().y, direction, 5);
+    };
+
     //defines sequence of actions when Entity is unalived
     virtual void dead() {};
     //basic actions that all animated entities must do (must be called from child's update method)
@@ -54,10 +67,14 @@ protected:
     cocos2d::Vector<cocos2d::SpriteFrame*> deadFrames;
     cocos2d::Size size;
     cocos2d::Vec2 origin;
+    cocos2d::Layer* layer;
     //gotta find better solution to this shit
     bool jumped;
     //initializes animation with frameCount sprite frames named by /namePattern (frameNumber).png/
     bool jumpDuration;
     float attackDuration;//shows when to switch to idle or run animation (simply counting down
     bool attacked;//shows whether player jumped or attacked
+    int lives;
+    int damage;
+    bool isDamageInflicted;
 };

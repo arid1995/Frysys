@@ -6,10 +6,11 @@
 
 USING_NS_CC;
 
-AnimatedEntity::AnimatedEntity(std::string type) {
+AnimatedEntity::AnimatedEntity(std::string type, Layer* _layer) {
     direction = 1;
     size = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
+    layer = _layer;
 
     cache = SpriteFrameCache::getInstance();
 
@@ -84,13 +85,6 @@ void AnimatedEntity::runToTheRight() {
     direction = 1;
     startAnimation(runFrames, ANIMATION_INTERVAL);
     setSpeedX(2);
-}
-
-void AnimatedEntity::attack() {
-    if (isInTheAir()) return;
-    attacked = true;
-    attackDuration = ANIMATION_INTERVAL * 10;
-    startAnimation(attackFrames, ANIMATION_INTERVAL, false);
 }
 
 void AnimatedEntity::stop() {

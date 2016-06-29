@@ -25,9 +25,6 @@ public:
     void fight(cocos2d::Point enemyPosition, cocos2d::Point playerPosition);
 
 private:
-    int lives;
-    int damage;
-    cocos2d::Layer* layer;
     bool startRun = false;
     bool startFight = false;
 };

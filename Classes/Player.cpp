@@ -6,11 +6,11 @@
 
 USING_NS_CC;
 
-Player::Player(cocos2d::Layer *_layer, std::string playerType) : AnimatedEntity(playerType)
+Player::Player(cocos2d::Layer *_layer, std::string playerType) : AnimatedEntity(playerType, _layer)
 {
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
-    layer = _layer;
+    isDamageInflicted = false;
     layer->addChild(this);
     ObjectList::getInstance()->addObject(this);
     scheduleUpdate();
@@ -18,9 +18,6 @@ Player::Player(cocos2d::Layer *_layer, std::string playerType) : AnimatedEntity(
 }
 
 void Player::shoot() {
-    attackDuration = ANIMATION_INTERVAL * 10;
-    startAnimation(shootFrames, ANIMATION_INTERVAL, false);
-    Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 25), getPosition().y, direction, 5);
 }
 
 void Player::collide(GameObject* object) {
@@ -31,8 +28,13 @@ void Player::inflictDamage(int damage) {
 }
 
 int Player::getDamage () {
+    if (attacked) {
+        int dmg = damage;
+        damage = 0;
+        isDamageInflicted = true;
+        return dmg;
+    }
     return 0;
-    // TODO: write here how should player recieve damage
 }
 
 void Player::dead() {
@@ -42,4 +44,14 @@ void Player::dead() {
 
 void Player::update(float delta) {
     std::list<GameObject*> collided = baseUpdate(delta);
+
+    //for melee attack
+    if (attacked && !isDamageInflicted) {
+        isDamageInflicted = true;
+        damage = 1;
+    }
+
+    if (!attacked) {
+        isDamageInflicted = false;
+    }
 }

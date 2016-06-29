@@ -7,11 +7,10 @@
 USING_NS_CC;
 
 Enemy::Enemy(Layer *_layer, std::string enemyType) : //only "knight" is allowed yet
-        AnimatedEntity(enemyType)
+        AnimatedEntity(enemyType, _layer)
 {
     lives = PLAYER_LIVES_COUNT;
     damage = PLAYER_DAMAGE;
-    layer = _layer;
     layer->addChild(this);
     ObjectList::getInstance()->addObject(this);
     scheduleUpdate();
