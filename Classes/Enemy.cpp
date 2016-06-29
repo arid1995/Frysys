@@ -22,6 +22,10 @@ void Enemy::inflictDamage(int damage) {
 }
 
 void Enemy::update(float delta) {
+    if (!isAlive()) {
+        return;
+    }
+
     GameObject* player = ObjectList::getInstance()->getFirstObject();
     Point enemyPosition = getPosition();
     Point playerPosition = player->getPosition();

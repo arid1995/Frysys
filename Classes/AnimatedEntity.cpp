@@ -11,6 +11,7 @@ AnimatedEntity::AnimatedEntity(std::string type, Layer* _layer) {
     size = Director::getInstance()->getVisibleSize();
     origin = Director::getInstance()->getVisibleOrigin();
     layer = _layer;
+    died = false;
 
     cache = SpriteFrameCache::getInstance();
 
@@ -119,6 +120,18 @@ void AnimatedEntity::collide(GameObject* object) {
 
 }
 
+bool AnimatedEntity::isAlive() {
+    if (lives <= 0) {
+        ObjectList::getInstance()->deleteObject(this);
+        if(!died) {
+            dead();
+            died = true;
+        }
+        return false;
+    }
+    return true;
+};
+
 int AnimatedEntity::getDamage () {
     if (attacked) {
         int dmg = damage;
@@ -130,6 +143,8 @@ int AnimatedEntity::getDamage () {
 }
 
 std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
+    std::list<GameObject*> collided = getCollidedObjects(ObjectList::getInstance()->getList());
+
     if (attackDuration > 0) {
         attackDuration -= delta;
     } else
@@ -140,8 +155,6 @@ std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
         else
             startAnimation(idleFrames, ANIMATION_INTERVAL);
     }
-
-    std::list<GameObject*> collided = getCollidedObjects(ObjectList::getInstance()->getList());
 
     if (collided.size() != 0) {
         for (std::list<GameObject*>::iterator i = collided.begin(); i != collided.end(); i++) {
@@ -157,13 +170,6 @@ std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
     }
 
     setSpeed(Vec2(getSpeedX(), getSpeedY()));
-
-    if (lives <= 0) {
-        layer->removeChild(this);
-        ObjectList::getInstance()->deleteObject(this);
-        delete this;
-        return collided;
-    }
 
     //for melee attack
     if (attacked && !isDamageInflicted) {

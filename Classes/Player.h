@@ -18,6 +18,5 @@ public:
     void shoot();
     void update(float delta);
     void collide(GameObject* object);
-    void dead();
     void inflictDamage(int damage);
 };

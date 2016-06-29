@@ -46,6 +46,7 @@ bool Game::init()
 }
 
 void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event){
+    if (!player->isAlive()) return;
     switch(keyCode){
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             anusKnight->runToTheLeft();
@@ -75,6 +76,7 @@ void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event*
 }
 
 void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event) {
+    if (!player->isAlive()) return;
     switch(keyCode){
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
             anusKnight->stop();

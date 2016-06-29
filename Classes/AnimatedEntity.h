@@ -36,6 +36,7 @@ public:
         Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 25), getPosition().y, direction, 5);
     };
 
+    bool isAlive();
     //defines sequence of actions when Entity is unalived
     void dead();
     int getDamage();
@@ -78,4 +79,5 @@ protected:
     int lives;
     int damage;
     bool isDamageInflicted;
+    bool died;
 };
