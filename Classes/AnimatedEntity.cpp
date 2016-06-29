@@ -183,3 +183,7 @@ std::list<GameObject*> AnimatedEntity::baseUpdate(float delta) {
 
     return collided;
 }
+
+int AnimatedEntity::getLives(){
+    return lives;
+}

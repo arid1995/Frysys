@@ -68,10 +68,6 @@ void Enemy::update(float delta) {
     std::list<GameObject*> collided = baseUpdate(delta);
 }
 
-int Enemy::getLives(){
-    return lives;
-}
-
 void Enemy::run(Point enemyPosition, Point playerPosition){
     if (enemyPosition.x - playerPosition.x < 0)
         runToTheRight();
