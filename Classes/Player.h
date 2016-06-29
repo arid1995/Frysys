@@ -19,4 +19,5 @@ public:
     void update(float delta);
     void collide(GameObject* object);
     void inflictDamage(int damage);
+    int getVelocity();
 };

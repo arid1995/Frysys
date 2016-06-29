@@ -82,14 +82,14 @@ void AnimatedEntity::runToTheLeft() {
     if (isInTheAir()) return;
     direction = -1;
     startAnimation(runFrames, ANIMATION_INTERVAL);
-    setSpeedX(-2);
+    setSpeedX(-getVelocity());
 }
 
 void AnimatedEntity::runToTheRight() {
     if (isInTheAir()) return;
     direction = 1;
     startAnimation(runFrames, ANIMATION_INTERVAL);
-    setSpeedX(2);
+    setSpeedX(getVelocity());
 }
 
 void AnimatedEntity::stop() {

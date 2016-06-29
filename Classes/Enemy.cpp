@@ -30,7 +30,20 @@ void Enemy::update(float delta) {
     Point enemyPosition = getPosition();
     Point playerPosition = player->getPosition();
     int dist = std::abs(enemyPosition.x - playerPosition.x);
-    if (dist < 100 && dist > 70){
+    
+    float size = Director::getInstance()->getVisibleSize().width;
+    
+    if (dist < size/DIST1 && dist > size/DIST2){
+        if (!startShoot){
+            startShoot = true;
+            shoot();
+        }
+    }
+    else{
+        startShoot = false;
+    }
+
+    if (dist < size/DIST2 && dist > size/DIST3){
         if (!startRun){
             startRun = true;
             run(enemyPosition, playerPosition);
@@ -38,10 +51,10 @@ void Enemy::update(float delta) {
     }
     else{
         startRun = false;
-        if (dist > 40)
+        if (dist > size/DIST4)
             stop();
     }
-    if (dist < 40){
+    if (dist < size/DIST4){
         if (!startFight){
             startFight = true;
             fight(enemyPosition, playerPosition);
@@ -64,10 +77,15 @@ void Enemy::run(Point enemyPosition, Point playerPosition){
         runToTheRight();
     else
         runToTheLeft();
+    shoot();
 }
 
 void Enemy::fight(Point enemyPosition, Point playerPosition){
     attack();
+}
+
+int Enemy::getVelocity(){
+    return ENEMY_MAX_VELOCITY;
 }
 
 

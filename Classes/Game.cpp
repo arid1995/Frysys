@@ -42,6 +42,7 @@ bool Game::init()
     menu->setPosition(Point(0,0));
     this->addChild(menu);
     
+    
     return true;
 }
 
@@ -153,9 +154,9 @@ void Game::Play(cocos2d::Ref *pSender){
     cache->addSpriteFramesWithFile("knight.plist", "knight.png");
     cache->addSpriteFramesWithFile("objects.plist", "objects.png");
     
-    player = new Player(this, "ninja");
+    player = new Player(this, "knight");
     
-    anusKnight = new Enemy(this, "knight");
+    anusKnight = new Enemy(this, "ninja");
 
     //FIXME::Hardcode!
     Exit *exit = new Exit(this, Vec2(650, 70));

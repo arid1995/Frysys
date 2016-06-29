@@ -33,8 +33,10 @@ public:
     virtual void shoot() {
         attackDuration = ANIMATION_INTERVAL * 10;
         startAnimation(shootFrames, ANIMATION_INTERVAL, false);
-        Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width / 2 + 25), getPosition().y, direction, 5);
+        Bullet* bullet = new Bullet(layer, getPosition().x + direction * (getContentSize().width*1.5), getPosition().y, direction, 5);
     };
+    
+    virtual int getVelocity() { return 0; };
 
     bool isAlive();
     //defines sequence of actions when Entity is unalived

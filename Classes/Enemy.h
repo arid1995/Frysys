@@ -22,8 +22,11 @@ public:
     int getLives();
     void run(cocos2d::Point enemyPosition, cocos2d::Point playerPosition);
     void fight(cocos2d::Point enemyPosition, cocos2d::Point playerPosition);
+    int getVelocity();
 
 private:
     bool startRun = false;
     bool startFight = false;
+    bool startShoot = false;
+    int velocity = 2;
 };
