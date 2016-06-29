@@ -165,7 +165,7 @@ void Game::Play(cocos2d::Ref *pSender){
     
     heart = (Sprite**) malloc (PLAYER_LIVES_COUNT*sizeof(Sprite*));
     
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < PLAYER_LIVES_COUNT; i++){
         heart[i] = Sprite::create("heart.png");
         addChild(heart[i]);
     }

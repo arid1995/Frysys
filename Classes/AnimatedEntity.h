@@ -25,9 +25,11 @@ public:
 
     virtual void attack() {
         if (isInTheAir()) return;
-        attacked = true;
-        attackDuration = ANIMATION_INTERVAL * 10;
-        startAnimation(attackFrames, ANIMATION_INTERVAL, false);
+        if(!attacked) {
+            attacked = true;
+            attackDuration = ANIMATION_INTERVAL * 10;
+            startAnimation(attackFrames, ANIMATION_INTERVAL, false);
+        }
     }
 
     virtual void shoot() {
