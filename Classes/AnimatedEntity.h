@@ -52,6 +52,7 @@ public:
     void setJumpDuration(bool set);
     bool getJumpDuration();
     bool isFalling();
+    int getLives();
 
 private:
     AnimatedEntity() {};

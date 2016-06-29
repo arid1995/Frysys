@@ -95,15 +95,22 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 }
 
 void Game::update(float dt){
-    int i = 0;
+    int i = 0, j = 0;
     Point ptPlayer = player->getPosition();
     Size sz = getContentSize();
-    for (i = 0; i < anusKnight->getLives(); i++){
-        heart[i]->setPosition(Point(ptPlayer.x - sz.width/2.5 + i*20, ptPlayer.y + sz.height/2.5));
+    for (i = 0; i < player->getLives(); i++){
+        heartPlayer[i]->setPosition(Point(ptPlayer.x - sz.width/2.2 + i*20, ptPlayer.y + sz.height/2.5));
     }
     for (;i < PLAYER_LIVES_COUNT; i++){
-        heart[i]->setVisible(false);
+        heartPlayer[i]->setVisible(false);
     }
+    for (j = 0; j < anusKnight->getLives(); j++){
+        heartEnemy[j]->setPosition(Point(ptPlayer.x + sz.width/10 + j*20, ptPlayer.y + sz.height/2.5));
+    }
+    for (;j < PLAYER_LIVES_COUNT; j++){
+        heartEnemy[j]->setVisible(false);
+    }
+    
 }
 
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) {
@@ -163,11 +170,14 @@ void Game::Play(cocos2d::Ref *pSender){
     
     ground->eGround(ObjectList::getInstance()->getList());
     
-    heart = (Sprite**) malloc (PLAYER_LIVES_COUNT*sizeof(Sprite*));
+    heartPlayer = (Sprite**) malloc (PLAYER_LIVES_COUNT*sizeof(Sprite*));
+    heartEnemy = (Sprite**) malloc (PLAYER_LIVES_COUNT*sizeof(Sprite*));
     
     for (int i = 0; i < PLAYER_LIVES_COUNT; i++){
-        heart[i] = Sprite::create("heart.png");
-        addChild(heart[i]);
+        heartPlayer[i] = Sprite::create("heart.png");
+        heartEnemy[i] = Sprite::create("heart.png");
+        addChild(heartPlayer[i]);
+        addChild(heartEnemy[i]);
     }
     
     camera = Follow::create(player, Rect::ZERO);
