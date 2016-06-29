@@ -47,13 +47,11 @@ void Player::update(float delta) {
     } else
         if (attacked) {
             attacked = false;
-            startAnimation(idleFrames, ANIMATION_INTERVAL);
+            if (getSpeedX() != 0)
+                startAnimation(runFrames, ANIMATION_INTERVAL);
+            else
+                startAnimation(idleFrames, ANIMATION_INTERVAL);
         }
-
-    if (jumped && !jumpDuration){
-        startAnimation(idleFrames, ANIMATION_INTERVAL);
-        jumped = false;
-    }
 
     //mirror sprites if direction is left
     if (direction == -1) {

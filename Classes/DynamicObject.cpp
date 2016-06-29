@@ -31,7 +31,6 @@ void DynamicObject::setSpeed(Vec2 velocity){
         gravityA+=0.25;
     Point pos = getPosition();
     setPosition(Point(pos.x + velocity.x, pos.y - velocity.y - gravityA));
-    //setPosition(Point(pos.x + velocity.x, pos.y));
 }
 
 float DynamicObject::getSpeedX(){

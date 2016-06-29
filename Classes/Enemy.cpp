@@ -36,12 +36,10 @@ void Enemy::update(float delta) {
     } else
     if (attacked) {
         attacked = false;
-        startAnimation(idleFrames, ANIMATION_INTERVAL);
-    }
-
-    if (jumped && !jumpDuration) {
-        startAnimation(idleFrames, ANIMATION_INTERVAL);
-        jumped = false;
+        if (getSpeedX() != 0)
+            startAnimation(runFrames, ANIMATION_INTERVAL);
+        else
+            startAnimation(idleFrames, ANIMATION_INTERVAL);
     }
 
     std::list<GameObject*> collided = getCollidedObjects(ObjectList::getInstance()->getList());
