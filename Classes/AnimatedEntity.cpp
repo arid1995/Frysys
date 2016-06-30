@@ -3,6 +3,7 @@
  * Base class for all "alive" objects
 */
 #include "AnimatedEntity.h"
+#include "Game.h"
 
 USING_NS_CC;
 

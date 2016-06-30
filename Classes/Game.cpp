@@ -4,6 +4,7 @@
 
 #include "Game.h"
 #include "Constants.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -31,64 +32,78 @@ bool Game::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     auto menu_item_1 = MenuItemFont::create("Play", CC_CALLBACK_1(Game::Play, this));
-    auto menu_item_2 = MenuItemFont::create("Highscores", CC_CALLBACK_1(Game::Highscores, this));
-    auto menu_item_3 = MenuItemFont::create("Settings", CC_CALLBACK_1(Game::Settings, this));
+    auto menu_item_2 = MenuItemFont::create("Exit", CC_CALLBACK_1(Game::Exit, this));
 
     menu_item_1->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*3));
     menu_item_2->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*2));
-    menu_item_3->setPosition(Point(visibleSize.width / 2, (visibleSize.height / 4)*1));
-    
-    auto *menu = Menu::create(menu_item_1, menu_item_2, menu_item_3, NULL);
+
+    auto *menu = Menu::create(menu_item_1, menu_item_2, NULL);
     menu->setPosition(Point(0,0));
     this->addChild(menu);
     
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/menu.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/menu.mp3");
     
     return true;
 }
 
 void Game::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event){
-    if (!player->isAlive()) return;
     switch(keyCode){
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+            if (!player->isAlive()) return;
             anusKnight->runToTheLeft();
             break;
         case EventKeyboard::KeyCode::KEY_A:
+            if (!player->isAlive()) return;
             player->runToTheLeft();
             break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+            if (!player->isAlive()) return;
             anusKnight->runToTheRight();
             break;
         case EventKeyboard::KeyCode::KEY_D:
+            if (!player->isAlive()) return;
             player->runToTheRight();
             break;
         case EventKeyboard::KeyCode::KEY_UP_ARROW:
+            if (!player->isAlive()) return;
             anusKnight->jump();
             break;
         case EventKeyboard::KeyCode::KEY_W:
+            if (!player->isAlive()) return;
             player->jump();
             break;
         case EventKeyboard::KeyCode::KEY_CTRL:
+            if (!player->isAlive()) return;
             player->attack();
             break;
         case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
+            if (!player->isAlive()) return;
             player->shoot();
             break;
+        case EventKeyboard::KeyCode::KEY_ESCAPE:
+            exit(0);
+            break;
+
     }
 }
 
 void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event) {
-    if (!player->isAlive()) return;
     switch(keyCode){
         case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+            if (!player->isAlive()) return;
             anusKnight->stop();
             break;
         case EventKeyboard::KeyCode::KEY_A:
+            if (!player->isAlive()) return;
             player->stop();
             break;
         case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+            if (!player->isAlive()) return;
             anusKnight->stop();
             break;
         case EventKeyboard::KeyCode::KEY_D:
+            if (!player->isAlive()) return;
             player->stop();
             break;
     } 
@@ -97,26 +112,39 @@ void Game::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event
 void Game::update(float dt){
     int i = 0, j = 0;
     Point ptPlayer = player->getPosition();
+    Size szPlayer = player->getContentSize();
+    Point ptEnemy = anusKnight->getPosition();
+    Size szEnemy = anusKnight->getContentSize();
     Size sz = getContentSize();
+    Size szHeart = heartEnemy[0]->getContentSize();
     for (i = 0; i < player->getLives(); i++){
-        heartPlayer[i]->setPosition(Point(ptPlayer.x - sz.width/2.2 + i*20, ptPlayer.y + sz.height/2.5));
+        heartPlayer[i]->setPosition(Point(ptPlayer.x - szPlayer.width/2.5 + i*szHeart.width, ptPlayer.y + szPlayer.height/2 + szHeart.height));
     }
     for (;i < PLAYER_LIVES_COUNT; i++){
         heartPlayer[i]->setVisible(false);
     }
     for (j = 0; j < anusKnight->getLives(); j++){
-        heartEnemy[j]->setPosition(Point(ptPlayer.x + sz.width/10 + j*20, ptPlayer.y + sz.height/2.5));
+        heartEnemy[j]->setPosition(Point(ptEnemy.x - szEnemy.width/2.5 + j*szHeart.width, ptEnemy.y + szEnemy.height/2 + szHeart.height));
     }
     for (;j < PLAYER_LIVES_COUNT; j++){
         heartEnemy[j]->setVisible(false);
     }
-    
 }
+
+/*void Game::GameOver(){
+    if (!wasHere){
+        exitSprite = Sprite::create("man.jpg");
+        exitSprite->setPosition(Point(player->getPosition().x, player->getPosition().y));
+        addChild(exitSprite);
+    }
+}*/
 
 bool Game::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event) {
     
     isTouching = true;
     touchPosition = Point(touch->getLocation().x, touch->getLocation().y);
+    if (touchPosition == exitSprite->getPosition())
+        exit(0);
     if ((touchPosition.x > getContentSize().width/4*3) && (touchPosition.y <= getContentSize().height/2))
         player->runToTheRight();
     if ((touchPosition.x < getContentSize().width/4) && (touchPosition.y <= getContentSize().height/2))
@@ -152,6 +180,10 @@ void Game::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event) {
 }
 
 void Game::Play(cocos2d::Ref *pSender){
+    CocosDenshion::SimpleAudioEngine::getInstance()->stopAllEffects();
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("audio/general.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/general.mp3");
+    
     ground = new Ground();
     ground->loadMap("level1.tmx");
     addChild(ground->getMap());
@@ -166,7 +198,7 @@ void Game::Play(cocos2d::Ref *pSender){
     anusKnight = new Enemy(this, "ninja");
 
     //FIXME::Hardcode!
-    Exit *exit = new Exit(this, Vec2(650, 70));
+    //Exit *exit = new Exit(this, Vec2(650, 70));
     
     ground->eGround(ObjectList::getInstance()->getList());
     
@@ -179,8 +211,8 @@ void Game::Play(cocos2d::Ref *pSender){
         addChild(heartPlayer[i]);
         addChild(heartEnemy[i]);
     }
-    
-    camera = Follow::create(player, Rect::ZERO);
+    Size sizeOfMap = ground->getMap()->getContentSize();
+    camera = Follow::create(player, Rect(0,0, sizeOfMap.width, sizeOfMap.height));
     camera->retain();
     runAction(camera);
     
@@ -204,12 +236,8 @@ void Game::Play(cocos2d::Ref *pSender){
     scheduleUpdate();
 }
 
-void Game::Highscores(cocos2d::Ref *pSender){
-    CCLOG("Highscores");
-}
-
-void Game::Settings(cocos2d::Ref *pSender){
-    CCLOG("Settings");
+void Game::Exit(cocos2d::Ref *pSender){
+    exit(0);
 }
 
 void Game::menuCloseCallback(Ref* pSender)
