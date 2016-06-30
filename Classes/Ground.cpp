@@ -22,11 +22,13 @@ void Ground::eGround(std::list<GameObject*> obj)
     getSizes();
     walls = map->getLayer("wall");
     // FIXME: consider using getSize instead of getContentSize
-    int pos = 7;
+    int posX = 7;
+    int posY = 10;
     
     for (std::list<GameObject*>::iterator it=ObjectList::getInstance()->getList().begin(); it != ObjectList::getInstance()->getList().end(); ++it){
-        it.operator*()->setPosition(positionForTileCoordinate(it.operator*()->getContentSize(), Point(pos,10)));
-        pos += 10;
+        it.operator*()->setPosition(positionForTileCoordinate(it.operator*()->getContentSize(), Point(posX,posY)));
+        posX += 10;
+        posY -= 7;
     }
 
 }

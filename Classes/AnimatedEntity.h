@@ -10,6 +10,7 @@
 #include "Constants.h"
 #include "ObjectList.h"
 #include "Bullet.h"
+#include "SimpleAudioEngine.h"
 
 #define JUMP_INTERVAL 0.08
 #define ANIMATION_INTERVAL 0.05
@@ -29,6 +30,8 @@ public:
             attacked = true;
             attackDuration = ANIMATION_INTERVAL * 10;
             startAnimation(attackFrames, ANIMATION_INTERVAL, false);
+            CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("audio/knife.m4a");
+            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("audio/knife.m4a");
         }
     }
 

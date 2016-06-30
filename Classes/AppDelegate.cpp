@@ -3,6 +3,7 @@
 
 USING_NS_CC;
 
+//static cocos2d::Size ResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(960, 600);
@@ -46,7 +47,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
         director->setOpenGLView(glview);
     }
-    // Set the design resolution
+
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
     Size frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
@@ -69,12 +70,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     auto scene = Game::createScene();
-    
-    CCLOG("hello");
 
-    // run
-    //add comment
-    //one more comment
     director->runWithScene(scene);
 
     return true;

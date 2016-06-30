@@ -26,8 +26,7 @@ public:
     void menuCloseCallback(Ref* pSender);
     cocos2d::Menu *menu;
     void Play(cocos2d::Ref *pSender);
-    void Highscores(cocos2d::Ref *pSender);
-    void Settings(cocos2d::Ref *pSender);
+    void Exit(cocos2d::Ref *pSender);
 
 private:
     void SetPhysicsWorld(cocos2d::PhysicsWorld *world) { sceneWorld = world; };
@@ -44,12 +43,15 @@ private:
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
     
+    bool wasHere = false;
+    
     cocos2d::PhysicsWorld *sceneWorld;
     cocos2d::SpriteFrameCache* cache;
     
     Ground* ground;
     Player *player;
     Enemy *anusKnight;
+    cocos2d::Sprite* exitSprite;
     cocos2d::Follow *camera;
     cocos2d::Size visibleSize;
     cocos2d::Sprite** heartPlayer = NULL;
